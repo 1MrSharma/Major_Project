@@ -10,14 +10,15 @@ HANDLE CFile::create(LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwShareMode)
 	return m_hFile;
 }
 
-void CFile::setr(m_hFile)
+void CFile::sethandle(HANDLE hFile)
 {
 	m_hFile = hFile;
 }
-HANDLE CFile::getr()
+HANDLE CFile::gethandle()
 {
-	return hFile;
+	return m_hFile;
 }
+
 /*
 void CFile::setr(DWORD dwDesiredAccess, DWORD dwShareMode)
 {
@@ -28,3 +29,4 @@ void CFile::setr(DWORD dwDesiredAccess, DWORD dwShareMode)
 }
 
 void CFile::getr()*/
+//merge the branch to major
