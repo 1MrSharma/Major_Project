@@ -7,6 +7,7 @@ int main()
 {
 	CFile obj;
 	obj.create(L"F:\\Major_project.bmp",GENERIC_READ,FILE_SHARE_READ);
+	obj.getr();
 	return 0;
 }
 

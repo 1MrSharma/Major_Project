@@ -10,7 +10,8 @@ private:
 	DWORD m_dwShareMode;
 public:
 	HANDLE create(LPCTSTR,DWORD,DWORD);
-
+	void setr(HANDLE);
+	HANDLE getr();
 };
 
 
