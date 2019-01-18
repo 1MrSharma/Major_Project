@@ -9,7 +9,8 @@ private:
 	DWORD m_dwShareMode;
 public:
 	HANDLE create(LPCTSTR,DWORD,DWORD);
-
+	void setr(m_hFile);
+	HANDLE getr();
 };
 
 
