@@ -5,8 +5,9 @@ class CFile
 private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
+	DWORD m_dwMode;
 public:
-	HANDLE create(LPCTSTR);
+	HANDLE create(LPCTSTR,DWORD);
 
 };
 
