@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "File.h"
 
+//TP: Where are you using the DWORD dwDesiredAccess,DWORD dwShareMode?
 HANDLE CFile::create(LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwShareMode) {
 
 	m_szFileName = szFileName;

@@ -5,7 +5,8 @@ class CFile
 private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
-	DWORD m_dwDesiredAccess;
+	// Does the 2 attributes written below are really required? Question yourself  
+	DWORD m_cdwDesiredAccess;
 	DWORD m_dwShareMode;
 public:
 	HANDLE create(LPCTSTR,DWORD,DWORD);
