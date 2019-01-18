@@ -6,12 +6,13 @@ private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
 	// Does the 2 attributes written below are really required? Question yourself  
-	DWORD m_cdwDesiredAccess;
+	DWORD m_dwDesiredAccess;
 	DWORD m_dwShareMode;
 public:
 	HANDLE create(LPCTSTR,DWORD,DWORD);
-	void setr(HANDLE);
-	HANDLE getr();
+	/*void setr(HANDLE);
+	 *HANDLE getr();
+	 */
 };
 
 

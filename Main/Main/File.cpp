@@ -9,7 +9,7 @@ HANDLE CFile::create(LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwShareMode)
 	
 	return m_hFile;
 }
-
+/*
 void CFile::sethandle(HANDLE hFile)
 {
 	m_hFile = hFile;
@@ -18,7 +18,7 @@ HANDLE CFile::gethandle()
 {
 	return m_hFile;
 }
-
+*/
 /*
 void CFile::setr(DWORD dwDesiredAccess, DWORD dwShareMode)
 {
