@@ -5,9 +5,10 @@
 #include"File.h"
 int main()
 {
+	
 	CFile obj;
-	obj.create(L"F:\\Major_project.bmp",GENERIC_READ,FILE_SHARE_READ);
-	//Bobj.getr();
+	obj.create(L"F:\\Major_project.bmp");
+	
 	return 0;
 }
 
