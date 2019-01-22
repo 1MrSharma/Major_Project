@@ -5,13 +5,8 @@ class CFile
 private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
-	
-	
 public:
-	HANDLE create(LPCTSTR);
+	void create(LPCTSTR);
 	void settr(HANDLE);
-	HANDLE gettr(HANDLE);
-		
+	HANDLE gettr();
 };
-
-
