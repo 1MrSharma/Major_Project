@@ -9,7 +9,9 @@ private:
 	
 public:
 	HANDLE create(LPCTSTR);
-	
+	void settr(HANDLE);
+	HANDLE gettr(HANDLE);
+		
 };
 
 

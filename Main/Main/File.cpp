@@ -9,3 +9,15 @@ HANDLE CFile::create(LPCTSTR szFileName) {
 	
 	return m_hFile;
 }
+
+void CFile::settr(HANDLE hFile)
+{
+	BOOL WINAPI CloseHandle(
+		_In_ HANDLE hFile
+	);
+}
+
+HANDLE CFile::gettr(HANDLE hFile)
+{
+
+}
