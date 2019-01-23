@@ -16,9 +16,10 @@ int main()
 	}
 	else
 	{
-		GetLastError()
+		DWORD dwErrCode = GetLastError();
+		printf("%d", dwErrCode);
 	}
-	if (obj.read(BUFFERSIZE - 1, &ptr) == TRUE)
+	if (obj.read(BUFFERSIZE - 1, *ptr) == TRUE)
 	{
 
 	}

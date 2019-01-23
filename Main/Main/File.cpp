@@ -36,5 +36,5 @@ HANDLE CFile::getHandle()const
 BOOL CFile::read(INT limit, LPVOID address)
 {
 	DWORD dwByteRead = 0;
-	if(ReadFile(m_hFile,address,limit,dwByteRead,NULL))
+	if(ReadFile(m_hFile,address,limit,&dwByteRead,NULL))
 }

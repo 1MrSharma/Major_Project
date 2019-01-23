@@ -8,7 +8,7 @@ private:
 public:
 	BOOL create(LPCTSTR,DWORD);
 	void close();
-	BOOL read(INT, LPVOID,DWORD);
+	BOOL read(INT, LPVOID);
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle()const;
 	
