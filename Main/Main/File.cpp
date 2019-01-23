@@ -1,23 +1,40 @@
 #include "pch.h"
 #include "File.h"
 #include<cstdio>
-void CFile::create(LPCTSTR szFileName) 
+
+BOOL CFile::create(LPCTSTR szFileName,DWORD dwDesiredAccess) 
 {
+	HANDLE hFile = NULL;
 
+	hFile = CreateFile(m_szFileName, dwDesiredAccess, FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	
+	if (hFile == INVALID_HANDLE_VALUE)
+		return FALSE;
+	
 	m_szFileName = szFileName;
+	setHandle(hFile);
+	return TRUE;
+}
 
-	m_hFile = CreateFile(m_szFileName, GENERIC_ALL, FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+void CFile::close()
+{
+	CloseHandle(m_hFile);
+	m_hFile = NULL;
+}
+
+void CFile::setHandle(HANDLE hFile)
+{
+	m_hFile = hFile;
 	
 }
 
-void CFile::settr(HANDLE hFile)
-{
-	BOOL WINAPI CloseHandle(
-		_In_ HANDLE hFile
-	);
-}
-
-HANDLE CFile::gettr()
+HANDLE CFile::getHandle()const
 {
 	return m_hFile;
+}
+
+BOOL CFile::read(INT limit, LPVOID address)
+{
+	DWORD dwByteRead = 0;
+	if(ReadFile(m_hFile,address,limit,dwByteRead,NULL))
 }

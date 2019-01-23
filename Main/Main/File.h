@@ -6,7 +6,10 @@ private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
 public:
-	void create(LPCTSTR);
-	void settr(HANDLE);
-	HANDLE gettr();
+	BOOL create(LPCTSTR,DWORD);
+	void close();
+	BOOL read(INT, LPVOID,DWORD);
+	inline void setHandle(HANDLE);
+	inline HANDLE getHandle()const;
+	
 };
