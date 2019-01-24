@@ -19,8 +19,12 @@ int main()
 		DWORD dwErrCode = GetLastError();
 		printf("%d", dwErrCode);
 	}
-	obj.read(BUFFERSIZE - 1, *ptr);
-	
+	obj.read(BUFFERSIZE - 1, &ptr);
+	for (int i = 0; i < 99; i++)
+	{
+		printf("%d\t",bBuffer[i]);
+		printf("\n");
+	}
 	return 0;
 
 }

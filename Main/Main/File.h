@@ -11,5 +11,4 @@ public:
 	BOOL read(INT, LPVOID);
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle()const;
-	
 };

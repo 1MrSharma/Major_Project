@@ -5,13 +5,13 @@
 BOOL CFile::create(LPCTSTR szFileName,DWORD dwDesiredAccess) 
 {
 	HANDLE hFile = NULL;
-
+	m_szFileName = szFileName;
 	hFile = CreateFile(m_szFileName, dwDesiredAccess, FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	
 	if (hFile == INVALID_HANDLE_VALUE)
 		return FALSE;
 	
-	m_szFileName = szFileName;
+	
 	setHandle(hFile);
 	return TRUE;
 }
@@ -40,8 +40,5 @@ BOOL CFile::read(INT limit, LPVOID address)
 	{
 		printf("Unable to do");
 		return FALSE;
-	}
-	else {
-		return TRUE;
 	}
 }
