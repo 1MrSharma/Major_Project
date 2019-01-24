@@ -36,5 +36,12 @@ HANDLE CFile::getHandle()const
 BOOL CFile::read(INT limit, LPVOID address)
 {
 	DWORD dwByteRead = 0;
-	if(ReadFile(m_hFile,address,limit,&dwByteRead,NULL))
+	if (FALSE == ReadFile(m_hFile, address, limit, &dwByteRead, NULL))
+	{
+		printf("Unable to do");
+		return FALSE;
+	}
+	else {
+		return TRUE;
+	}
 }
