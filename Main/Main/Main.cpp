@@ -3,28 +3,23 @@
 #include<Windows.h>
 #include<cstdio>
 #include"File.h"
-#define BUFFERSIZE 100
+#define BUFFERSIZE 1000
 int main()
 
 {
 	BYTE bBuffer[BUFFERSIZE] = { 0 };
 	LPVOID *ptr =(LPVOID*) bBuffer;
 	CFile obj;
+	int a = 2;
 	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
 	{
-		printf("We're inside where we passsed the string and generic_read");
+		obj.read( &ptr, BUFFERSIZE - 1);
+		obj.write( &ptr, a );
 	}
 	else
 	{
 		DWORD dwErrCode = GetLastError();
 		printf("%d", dwErrCode);
 	}
-	obj.read(BUFFERSIZE - 1, &ptr);
-	for (int i = 0; i < 99; i++)
-	{
-		printf("%d\t",bBuffer[i]);
-		printf("\n");
-	}
 	return 0;
-
 }
