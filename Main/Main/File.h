@@ -5,6 +5,7 @@ class CFile
 private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
+	
 public:
 	BOOL create(LPCTSTR,DWORD);
 	void close();
@@ -13,5 +14,5 @@ public:
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle(void)const;
 	DWORD geterror(void);
-
+	const INT nSECTORSIZE = 512 ;
 };

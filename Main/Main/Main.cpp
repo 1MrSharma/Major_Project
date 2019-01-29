@@ -3,14 +3,14 @@
 #include<Windows.h>
 #include<cstdio>
 #include"File.h"
-constexpr auto BUFFERSIZE = 1000;
+const int nBUFFERSIZE = 1024;
 int main()
 
 {
-	BYTE bBuffer[BUFFERSIZE] = { 0 };
+	BYTE bBuffer[nBUFFERSIZE] = { 0 };
 	LPVOID ptr =(LPVOID) bBuffer;
 	CFile obj;
-	int SECTORSIZE = 512;
+	
 	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
 	{
 		
@@ -19,7 +19,7 @@ int main()
 	{
 		obj.geterror();
 	}
-	if (obj.read(&ptr, SECTORSIZE) == TRUE)
+	if (obj.read(&ptr,const INT CFile::nSECTORSIZE) == TRUE)
 	{
 
 	}

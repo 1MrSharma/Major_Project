@@ -7,4 +7,5 @@ All the methods that can be added in the code.
 Ques : Do I need to use Two attributes in the code (i.e)  m_dwDesiredAccess, m_dwShareMode 
 Ans: I only need declarationin the create file functions so that it can accept read write or both operations.
 m_dwDesiredAccess
-What to pass in the settr in main  so that it will close the handle.
+What to pass in the settr in main  so that it will close the handle.\
+29/01/2019
