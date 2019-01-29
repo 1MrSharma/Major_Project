@@ -13,6 +13,6 @@ public:
 	BOOL write(LPVOID,INT);
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle(void)const;
-	DWORD geterror(void);
+	
 	const INT nSECTORSIZE = 512 ;
 };

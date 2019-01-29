@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "Error.h"
 
-
-CError::CError()
+DWORD CError::geterror(void)
 {
-}
-
-
-CError::~CError()
-{
+	GetLastError();
 }

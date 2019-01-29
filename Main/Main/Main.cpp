@@ -3,6 +3,8 @@
 #include<Windows.h>
 #include<cstdio>
 #include"File.h"
+#include"Error.h"
+
 const int nBUFFERSIZE = 1024;
 int main()
 
@@ -10,6 +12,7 @@ int main()
 	BYTE bBuffer[nBUFFERSIZE] = { 0 };
 	LPVOID ptr =(LPVOID) bBuffer;
 	CFile obj;
+	CError obj1;
 	
 	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
 	{
@@ -17,15 +20,15 @@ int main()
 	}
 	else
 	{
-		obj.geterror();
+		obj1.geterror();
 	}
-	if (obj.read(&ptr,const INT CFile::nSECTORSIZE) == TRUE)
+	if (obj.read(&ptr,CFile::nSECTORSIZE ) == TRUE)
 	{
 
 	}
 	else
 	{
-		obj.geterror();
+		obj1.geterror();
 	}
 	if (obj.write(&ptr, SECTORSIZE) == TRUE)
 	{
@@ -33,7 +36,7 @@ int main()
 	}
 	else
 	{
-		obj.geterror();
+		obj1.geterror();
 	}
 	return 0;
 }

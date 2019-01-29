@@ -61,7 +61,3 @@ BOOL CFile::write(LPVOID address, INT limit)
 	}
 }
 
-DWORD CFile::geterror(void)
-{
-	GetLastError();
-}
