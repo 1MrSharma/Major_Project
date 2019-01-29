@@ -37,21 +37,27 @@ BOOL CFile::read(LPVOID address,INT limit)
 	DWORD dwByteRead;
 	if (FALSE == (ReadFile(m_hFile, address, limit, &dwByteRead, NULL)))
 	{
-		geterror();
 		close();
 		return FALSE;
+	}
+	else
+	{
+		return TRUE;
 	}
 
 }
 
-BOOL CFile::write(LPVOID address, INT towrite)
+BOOL CFile::write(LPVOID address, INT limit)
 {
 	DWORD dwByteWrite;
-	if (FALSE == (WriteFile(m_hFile, address, towrite, &dwByteWrite, NULL)))
+	if (FALSE == (WriteFile(m_hFile, address, limit, &dwByteWrite, NULL)))
 	{
-		geterror();
 		close();
 		return FALSE;
+	}
+	else
+	{
+		return TRUE;
 	}
 }
 
