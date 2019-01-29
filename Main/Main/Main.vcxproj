@@ -167,8 +167,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Comments.md" />
-    <None Include="Test.md" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

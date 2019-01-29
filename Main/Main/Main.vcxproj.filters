@@ -40,7 +40,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Comments.md" />
-    <None Include="Test.md" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
