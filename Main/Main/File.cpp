@@ -37,9 +37,9 @@ BOOL CFile::read(LPVOID address,INT limit)
 	DWORD dwByteRead;
 	if (FALSE == (ReadFile(m_hFile, address, limit, &dwByteRead, NULL)))
 	{
-		printf("Terminal failure: Unable to read from file.\n GetLastError=%08x\n", GetLastError());
+		geterror();
 		close();
-		return EXIT_FAILURE;
+		return FALSE;
 	}
 
 }
@@ -49,8 +49,13 @@ BOOL CFile::write(LPVOID address, INT towrite)
 	DWORD dwByteWrite;
 	if (FALSE == (WriteFile(m_hFile, address, towrite, &dwByteWrite, NULL)))
 	{
-		printf("Terminal failure: Unable to write to file.\n GetLastError=%08x\n", GetLastError());
+		geterror();
 		close();
-		return EXIT_FAILURE;
+		return FALSE;
 	}
+}
+
+DWORD CFile::geterror(void)
+{
+	GetLastError();
 }

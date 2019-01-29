@@ -18,8 +18,7 @@ int main()
 	}
 	else
 	{
-		DWORD dwErrCode = GetLastError();
-		printf("%d", dwErrCode);
+		obj.geterror();
 	}
 	return 0;
 }

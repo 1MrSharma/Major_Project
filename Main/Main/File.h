@@ -11,5 +11,7 @@ public:
 	BOOL read( LPVOID, INT);
 	BOOL write(LPVOID,INT);
 	inline void setHandle(HANDLE);
-	inline HANDLE getHandle()const;
+	inline HANDLE getHandle(void)const;
+	DWORD geterror(void);
+
 };
