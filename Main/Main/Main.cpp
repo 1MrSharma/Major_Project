@@ -3,7 +3,7 @@
 #include<Windows.h>
 #include<cstdio>
 #include"File.h"
-#define BUFFERSIZE 1000 
+constexpr auto BUFFERSIZE = 1000;
 int main()
 
 {
