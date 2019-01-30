@@ -11,7 +11,7 @@ int main()
 {
 	BYTE bBuffer[nBUFFERSIZE] = { 0 };
 	LPVOID ptr =(LPVOID) bBuffer;
-	CFile obj;
+	CFile obj,obj2;
 	CError obj1;
 	
 	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
@@ -30,7 +30,7 @@ int main()
 	{
 		obj1.geterror();
 	}
-	if (obj.write(&ptr, SECTORSIZE) == TRUE)
+	if (obj2.write(&ptr,CFile::nSECTORSIZE) == TRUE)
 	{
 
 	}

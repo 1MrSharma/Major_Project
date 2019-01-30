@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Error.h"
 
-DWORD CError::geterror(void)
+CHAR CError::geterror(void)
 {
-	GetLastError();
+	m_szErrName=GetLastError();
+	return m_szErrName;
 }
