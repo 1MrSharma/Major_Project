@@ -7,11 +7,11 @@ private:
 	LPCTSTR m_szFileName;
 	
 public:
+	static const INT m_knSECTORSIZE = 512;
 	BOOL create(LPCTSTR,DWORD);
 	void close();
 	BOOL read( LPVOID, INT);
 	BOOL write(LPVOID,INT);
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle(void)const;
-	static const INT g_nSECTORSIZE = 512 ;
 };

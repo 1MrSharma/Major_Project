@@ -12,32 +12,32 @@ int main()
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 }, bWriteBuffer[nBUFFERSIZE] = { 0 };
 	LPVOID ptr = (LPVOID)bReadBuffer;
 	LPVOID ptr1 = (LPVOID)bWriteBuffer;
-	CFile obj,obj2;
-	CError obj1;
+	CFile obj_file_to_read,obj_file_to_write;
+	CError obj_error_handler;
 	
-	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
+	if (obj_file_to_read.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
 	{
 		printf("File opened successfully.\n");
 	}
 	else
 	{
-		obj1.geterror();
+		obj_error_handler.geterror();
 	}
-	if (obj.read(&ptr,CFile::g_nSECTORSIZE ) == TRUE)
+	if (obj_file_to_read.read(&ptr,CFile::m_knSECTORSIZE ) == TRUE)
 	{
 		printf("Data stored successfully.\n");
 	}
 	else
 	{
-		obj1.geterror();
+		obj_error_handler.geterror();
 	}
-	if (obj2.write(&ptr1,CFile::g_nSECTORSIZE) == TRUE)
+	if (obj_file_to_write.write(&ptr1,CFile::m_knSECTORSIZE) == TRUE)
 	{
 		printf("Data written successfully.\n");
 	}
 	else
 	{
-		obj1.geterror();
+		obj_error_handler.geterror();
 	}
 	return 0;
 }

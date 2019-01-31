@@ -2,14 +2,31 @@
 #include "Error.h"
 #include<cstdio>
 
-void CError::geterror(void)
+WCHAR CError::geterror(void)
 {
-	m_dwErrCode =GetLastError();
-	printerrormessege(m_dwChar);
-}
+	m_dwErrCode = GetLastError();
+	if (m_dwErrCode)
+	{
+		m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, m_dwErrCode, 0, NULL, 512, NULL);
+		if (m_dwChar)
+		{
+			//return 
+		}
+		else
+		{
+			HINSTANCE hInst;
 
-void CError::printerrormessege(DWORD)
-{
-	m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, m_dwErrCode, 0, m_wszMsgBuffer, 512, NULL);
-	printf("Error value: %d Message: %ws\n", m_dwErrCode, m_dwChar ? m_wszMsgBuffer : L"Error message not found");
+			hInst = LoadLibrary(L"Ntdsbmsg.dll");
+			if (NULL == hInst)
+			{
+				exit(1);
+			}
+			else
+			{
+				m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, hInst, m_dwErrCode, 0, m_wszMsgBuffer, 512, NULL);
+					FreeLibrary( hInst ) ;
+					//return
+			}
+		}
+	}
 }
