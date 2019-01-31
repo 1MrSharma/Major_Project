@@ -4,8 +4,10 @@ class CError
 {
 private:
 	DWORD m_dwErrCode;
-	CHAR m_szErrName;
+	WCHAR m_wszMsgBuffer[512];
+	DWORD m_dwChar;
 public:
-	CHAR geterror(void);
+	TCHAR geterror(void);
+	DWORD printerrormessege(DWORD);
 };
 

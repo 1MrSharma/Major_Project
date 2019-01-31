@@ -13,16 +13,18 @@ int main()
 	LPVOID ptr =(LPVOID) bBuffer;
 	CFile obj,obj2;
 	CError obj1;
+	TCHAR error;
 	
 	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
 	{
-		
+		printf("File opened successfully.\n");
 	}
 	else
 	{
-		obj1.geterror();
+		error=obj1.geterror();
+		std::cout << error << std::endl;
 	}
-	if (obj.read(&ptr,CFile::nSECTORSIZE ) == TRUE)
+	if (obj.read(&ptr,CFile::g_nSECTORSIZE ) == TRUE)
 	{
 
 	}
@@ -30,7 +32,7 @@ int main()
 	{
 		obj1.geterror();
 	}
-	if (obj2.write(&ptr,CFile::nSECTORSIZE) == TRUE)
+	if (obj2.write(&ptr,CFile::g_nSECTORSIZE) == TRUE)
 	{
 
 	}

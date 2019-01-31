@@ -13,5 +13,5 @@ public:
 	BOOL write(LPVOID,INT);
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle(void)const;
-	static const INT nSECTORSIZE = 512 ;
+	static const INT g_nSECTORSIZE = 512 ;
 };
