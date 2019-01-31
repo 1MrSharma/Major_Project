@@ -7,7 +7,7 @@ private:
 	WCHAR m_wszMsgBuffer[512];
 	DWORD m_dwChar;
 public:
-	TCHAR geterror(void);
-	DWORD printerrormessege(DWORD);
+	void geterror(void);
+	void printerrormessege(DWORD);
 };
 
