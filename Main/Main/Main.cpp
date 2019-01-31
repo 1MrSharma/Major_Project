@@ -13,7 +13,6 @@ int main()
 	LPVOID ptr =(LPVOID) bBuffer;
 	CFile obj,obj2;
 	CError obj1;
-	TCHAR error;
 	
 	if (obj.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
 	{
@@ -21,8 +20,7 @@ int main()
 	}
 	else
 	{
-		error=obj1.geterror();
-		std::cout << error << std::endl;
+		obj1.geterror();
 	}
 	if (obj.read(&ptr,CFile::g_nSECTORSIZE ) == TRUE)
 	{
