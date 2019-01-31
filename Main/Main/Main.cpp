@@ -9,8 +9,9 @@ const int nBUFFERSIZE = 1024;
 int main()
 
 {
-	BYTE bBuffer[nBUFFERSIZE] = { 0 };
-	LPVOID ptr =(LPVOID) bBuffer;
+	BYTE bReadBuffer[nBUFFERSIZE] = { 0 }, bWriteBuffer[nBUFFERSIZE] = { 0 };
+	LPVOID ptr = (LPVOID)bReadBuffer;
+	LPVOID ptr1 = (LPVOID)bWriteBuffer;
 	CFile obj,obj2;
 	CError obj1;
 	
@@ -24,15 +25,15 @@ int main()
 	}
 	if (obj.read(&ptr,CFile::g_nSECTORSIZE ) == TRUE)
 	{
-
+		printf("Data stored successfully.\n");
 	}
 	else
 	{
 		obj1.geterror();
 	}
-	if (obj2.write(&ptr,CFile::g_nSECTORSIZE) == TRUE)
+	if (obj2.write(&ptr1,CFile::g_nSECTORSIZE) == TRUE)
 	{
-
+		printf("Data written successfully.\n");
 	}
 	else
 	{
