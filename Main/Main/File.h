@@ -11,7 +11,8 @@ public:
 	BOOL create(LPCTSTR,DWORD);
 	void close();
 	BOOL read( LPVOID, INT);
-	BOOL write(LPVOID,INT);
+
+	//BOOL write(LPVOID,INT);
 	inline void setHandle(HANDLE);
 	inline HANDLE getHandle(void)const;
 };

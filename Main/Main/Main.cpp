@@ -33,7 +33,7 @@ int main()
 	{
 		error_message=obj_error_handler.geterror();
 		printf("The error message:-%c\n", error_message);
-	}
+	}/*
 	if (obj_file_to_write.write(&ptr1,CFile::m_knSECTORSIZE) == TRUE)
 	{
 		printf("Data written successfully.\n");
@@ -42,6 +42,6 @@ int main()
 	{
 		error_message=obj_error_handler.geterror();
 		printf("The error message:-%c\n", error_message);
-	}
+	}*/
 	return 0;
 }
