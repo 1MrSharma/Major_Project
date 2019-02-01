@@ -29,7 +29,6 @@ int main()
 	}
 	obj_file_to_read.close();
 
-	//printf("%s", bReadBuffer);
 
 	if (obj_file_to_write.create(L"F:\\WrittenFile.txt", GENERIC_WRITE, CREATE_NEW) == FALSE)
 	{
