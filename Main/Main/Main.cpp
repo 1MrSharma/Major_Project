@@ -37,10 +37,14 @@ int main()
 		printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
 		return EXIT_FAILURE;
 	}
-	obj_file_to_write.close();
+	
 
-
+	if (obj_file_to_write.write(bReadBuffer, sizeof(bReadBuffer)) == FALSE)
+	{
+		printf("The error message:-%ws\n", obj_error_handler.geterrordescription());
+		return EXIT_FAILURE;
+	}
 	return 0;
 }
-//Have to write
+
 //Write clsas diagram of BMP class.
