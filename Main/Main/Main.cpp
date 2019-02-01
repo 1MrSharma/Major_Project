@@ -10,7 +10,7 @@ int main()
 
 {
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
-	CFile obj_file_to_read;
+	CFile obj_file_to_read,obj_file_to_write;
 	CError obj_error_handler;
 	
 	if (obj_file_to_read.create(L"F:\\Major_project.bmp", GENERIC_READ) == FALSE)
@@ -26,7 +26,10 @@ int main()
 	}
 	obj_file_to_read.close();
 
-	printf("%s", bReadBuffer);
+	//printf("%s", bReadBuffer);
+
+	obj_file_to_write.create(L"F:\\WrittenFile.txt",GENERIC_WRITE)
+
 	return 0;
 }
 //Have to write
