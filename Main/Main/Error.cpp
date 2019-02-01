@@ -4,13 +4,15 @@
 
 WCHAR CError::geterror(void)
 {
+	
 	m_dwErrCode = GetLastError();
 	if (m_dwErrCode)
 	{
-		m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, m_dwErrCode, 0, NULL, 512, NULL);
-		if (m_dwChar)
+		m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, m_dwErrCode, 0, &messageBuffer, 512, NULL);
+		if (1==m_dwChar)
 		{
-			//return 
+			LocalFree(&messageBuffer);
+			return messageBuffer;
 		}
 		else
 		{
@@ -22,10 +24,10 @@ WCHAR CError::geterror(void)
 				exit(1);
 			}
 			else
-			{
-				m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, hInst, m_dwErrCode, 0, m_wszMsgBuffer, 512, NULL);
+			{	//Trying to get message from ntdsbmsg
+				m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, hInst, m_dwErrCode, 0, &messageBuffer, 512, NULL);
 					FreeLibrary( hInst ) ;
-					//return
+					return messageBuffer;
 			}
 		}
 	}

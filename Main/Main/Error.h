@@ -4,8 +4,8 @@ class CError
 {
 private:
 	DWORD m_dwErrCode;
-	WCHAR m_wszMsgBuffer[512];
 	DWORD m_dwChar;
+	WCHAR messageBuffer = NULL;
 public:
 	WCHAR geterror(void);
 };

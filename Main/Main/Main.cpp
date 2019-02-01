@@ -12,6 +12,7 @@ int main()
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 }, bWriteBuffer[nBUFFERSIZE] = { 0 };
 	LPVOID ptr = (LPVOID)bReadBuffer;
 	LPVOID ptr1 = (LPVOID)bWriteBuffer;
+	WCHAR error_message;
 	CFile obj_file_to_read,obj_file_to_write;
 	CError obj_error_handler;
 	
@@ -21,7 +22,8 @@ int main()
 	}
 	else
 	{
-		obj_error_handler.geterror();
+		error_message=obj_error_handler.geterror();
+		printf("The error message:-%c\n", error_message);
 	}
 	if (obj_file_to_read.read(&ptr,CFile::m_knSECTORSIZE ) == TRUE)
 	{
@@ -29,7 +31,8 @@ int main()
 	}
 	else
 	{
-		obj_error_handler.geterror();
+		error_message=obj_error_handler.geterror();
+		printf("The error message:-%c\n", error_message);
 	}
 	if (obj_file_to_write.write(&ptr1,CFile::m_knSECTORSIZE) == TRUE)
 	{
@@ -37,7 +40,8 @@ int main()
 	}
 	else
 	{
-		obj_error_handler.geterror();
+		error_message=obj_error_handler.geterror();
+		printf("The error message:-%c\n", error_message);
 	}
 	return 0;
 }
