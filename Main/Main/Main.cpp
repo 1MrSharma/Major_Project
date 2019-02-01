@@ -44,6 +44,7 @@ int main()
 		printf("The error message:-%ws\n", obj_error_handler.geterrordescription());
 		return EXIT_FAILURE;
 	}
+	obj_file_to_write.close();
 	return 0;
 }
 
