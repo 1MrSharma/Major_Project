@@ -9,39 +9,25 @@ const int nBUFFERSIZE = 1024;
 int main()
 
 {
-	BYTE bReadBuffer[nBUFFERSIZE] = { 0 }, bWriteBuffer[nBUFFERSIZE] = { 0 };
-	LPVOID ptr = (LPVOID)bReadBuffer;
-	LPVOID ptr1 = (LPVOID)bWriteBuffer;
-	WCHAR error_message;
-	CFile obj_file_to_read,obj_file_to_write;
+	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
+	CFile obj_file_to_read;
 	CError obj_error_handler;
 	
-	if (obj_file_to_read.create(L"F:\\Major_project.bmp", GENERIC_READ) == TRUE)
+	if (obj_file_to_read.create(L"F:\\Major_project.bmp", GENERIC_READ) == FALSE)
 	{
-		printf("File opened successfully.\n");
+		printf("The error message:-%s\n", obj_error_handler.geterrordescription());
+		return EXIT_FAILURE;
 	}
-	else
+
+	if (obj_file_to_read.read(bReadBuffer,CFile::m_knSECTORSIZE ) == FALSE)
 	{
-		error_message=obj_error_handler.geterror();
-		printf("The error message:-%c\n", error_message);
+		printf("The error message:-%s\n", obj_error_handler.geterrordescription());
+		return EXIT_FAILURE;
 	}
-	if (obj_file_to_read.read(&ptr,CFile::m_knSECTORSIZE ) == TRUE)
-	{
-		printf("Data stored successfully.\n");
-	}
-	else
-	{
-		error_message=obj_error_handler.geterror();
-		printf("The error message:-%c\n", error_message);
-	}/*
-	if (obj_file_to_write.write(&ptr1,CFile::m_knSECTORSIZE) == TRUE)
-	{
-		printf("Data written successfully.\n");
-	}
-	else
-	{
-		error_message=obj_error_handler.geterror();
-		printf("The error message:-%c\n", error_message);
-	}*/
+	obj_file_to_read.close();
+
+	printf("%s", bReadBuffer);
 	return 0;
 }
+//Have to write
+//Write clsas diagram of BMP class.

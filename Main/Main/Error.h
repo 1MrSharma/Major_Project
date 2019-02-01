@@ -4,9 +4,11 @@ class CError
 {
 private:
 	DWORD m_dwErrCode;
-	DWORD m_dwChar;
-	WCHAR messageBuffer = NULL;
+	
 public:
-	WCHAR geterror(void);
+	LPCTSTR geterrordescription(void);
+	LPCTSTR geterrordescription(DWORD);
+	void setErrCode(DWORD);
+	DWORD getErrCode(void);
 };
 

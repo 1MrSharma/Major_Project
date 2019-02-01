@@ -2,33 +2,34 @@
 #include "Error.h"
 #include<cstdio>
 
-WCHAR CError::geterror(void)
+
+LPCTSTR CError::geterrordescription(const DWORD dwErrCode)
 {
-	
-	m_dwErrCode = GetLastError();
+	setErrCode(dwErrCode);
+	return geterrordescription();
+}
+
+LPCTSTR CError::geterrordescription(void)
+{
+	DWORD dwChar;
+	wchar_t szmessageBuffer[512] = {NULL};
 	if (m_dwErrCode)
 	{
-		m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, m_dwErrCode, 0, &messageBuffer, 512, NULL);
-		if (1==m_dwChar)
+		dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, m_dwErrCode, 0, szmessageBuffer, 512, NULL);//512 --->sizeof
+		if (0 == dwChar)
 		{
-			LocalFree(&messageBuffer);
-			return messageBuffer;
+			return L"Failed to retrieve the error code.";
 		}
-		else
-		{
-			HINSTANCE hInst;
-
-			hInst = LoadLibrary(L"Ntdsbmsg.dll");
-			if (NULL == hInst)
-			{
-				exit(1);
-			}
-			else
-			{	//Trying to get message from ntdsbmsg
-				m_dwChar = FormatMessage(FORMAT_MESSAGE_FROM_HMODULE | FORMAT_MESSAGE_IGNORE_INSERTS, hInst, m_dwErrCode, 0, &messageBuffer, 512, NULL);
-					FreeLibrary( hInst ) ;
-					return messageBuffer;
-			}
-		}
+		return szmessageBuffer;
 	}
+}
+
+void CError::setErrCode(DWORD dwErrCode)
+{
+	m_dwErrCode = dwErrCode;
+}
+
+DWORD CError::getErrCode()
+{
+	return m_dwErrCode;
 }
