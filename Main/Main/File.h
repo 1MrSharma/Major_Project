@@ -8,7 +8,7 @@ private:
 	
 public:
 	static const INT m_knSECTORSIZE = 512;
-	BOOL create(LPCTSTR,DWORD);
+	BOOL create(LPCTSTR,DWORD,DWORD);
 	void close();
 	BOOL read( LPVOID, INT);
 	BOOL write(LPVOID, INT);
