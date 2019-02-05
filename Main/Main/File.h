@@ -5,9 +5,9 @@ class CFile
 private:
 	HANDLE m_hFile;
 	LPCTSTR m_szFileName;
-	
 public:
 	static const INT m_knSECTORSIZE = 512;
+public:
 	BOOL create(LPCTSTR,DWORD,DWORD);
 	void close();
 	BOOL read( LPVOID, INT);
