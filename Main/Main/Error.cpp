@@ -24,7 +24,7 @@ LPCTSTR CError::geterrordescription(void)
 	}
 }
 
-void CError::setErrCode(DWORD dwErrCode)
+void CError::setErrCode(const DWORD dwErrCode)
 {
 	m_dwErrCode = dwErrCode;
 }

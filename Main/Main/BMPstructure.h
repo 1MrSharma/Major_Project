@@ -1,0 +1,20 @@
+#pragma once
+#include<Windows.h>
+struct BMPstructure
+{
+	WORD m_wFiletype;
+	DWORD m_dwSizeBMP;//size of bmpfile
+	WORD m_wReserved;
+	DWORD m_dwOffsetpixelarray;
+	DWORD m_dwSizebitmapinfoheader;
+	INT32 m_nBitmapwidth;
+	INT32 m_nBitmapheight;
+	WORD m_wColorplanes;
+	WORD m_wColordepth;
+	DWORD m_dwCompressionmethod;
+	DWORD m_dwRawimagesize;
+	DWORD m_dwHorizontalresolution;
+	DWORD m_dwVerticalresolution;
+	DWORD m_dwColorpallete;//number of colors in color pallette
+	DWORD m_dwImportantcolors;//Important colors used 0 when all colors are important
+};

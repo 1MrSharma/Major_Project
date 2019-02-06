@@ -2,7 +2,7 @@
 #include "File.h"
 #include<cstdio>
 
-BOOL CFile::create(LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
+BOOL CFile::create(const LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
 {
 	HANDLE hFile = NULL;
 	
@@ -21,7 +21,7 @@ void CFile::close()
 	m_hFile = NULL;
 }
 
-void CFile::setHandle(HANDLE hFile)
+void CFile::setHandle(const HANDLE hFile)
 {
 	m_hFile = hFile;
 	
@@ -32,7 +32,7 @@ HANDLE CFile::getHandle()const
 	return m_hFile;
 }
 
-BOOL CFile::read(LPVOID address,INT limit)
+BOOL CFile::read(LPVOID address,const INT limit)
 {
 	DWORD dwByteRead;
 	if (FALSE == (ReadFile(m_hFile, address, limit, &dwByteRead, NULL)))
