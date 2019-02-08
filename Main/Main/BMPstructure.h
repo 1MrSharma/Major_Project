@@ -3,8 +3,9 @@
 struct BMPstructure
 {
 	WORD m_wFiletype;
-	DWORD m_dwSizeBMP;//size of bmpfile
-	WORD m_wReserved;
+	DWORD m_dwSizeBMP;
+	WORD m_wReserved1;
+	WORD m_wReserved2;
 	DWORD m_dwOffsetpixelarray;
 	DWORD m_dwSizebitmapinfoheader;
 	INT32 m_nBitmapwidth;
@@ -15,6 +16,6 @@ struct BMPstructure
 	DWORD m_dwRawimagesize;
 	DWORD m_dwHorizontalresolution;
 	DWORD m_dwVerticalresolution;
-	DWORD m_dwColorpallete;//number of colors in color pallette
-	DWORD m_dwImportantcolors;//Important colors used 0 when all colors are important
-};
+	DWORD m_dwColorpallete;
+	DWORD m_dwImportantcolors;
+}BMPstructurevariable;
