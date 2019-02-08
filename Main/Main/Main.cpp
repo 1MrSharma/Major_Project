@@ -5,6 +5,7 @@
 #include"File.h"
 #include"Error.h"
 #include"BMPstructure.h"
+#include<C:\Users\Shubham Sharma\Desktop\1MrSharma\Major_Project\Main\Main\Helper.h>
 const int nBUFFERSIZE = 1024;
 int main()
 
@@ -12,6 +13,8 @@ int main()
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
 	CFile obj_file_to_read,obj_file_to_write;
 	CError obj_error_handler;
+	CHelper obj_helper;
+	
 	DWORD dwErrCode;
 	
 	if (obj_file_to_read.create(L"I:\\Major_project.bmp", GENERIC_READ, OPEN_EXISTING) == FALSE)
@@ -45,7 +48,8 @@ int main()
 	memcpy(&BMPstructurevariable.m_dwVerticalresolution, bReadBuffer + 42, 4);
 	memcpy(&BMPstructurevariable.m_dwColorpallete, bReadBuffer + 46, 4);
 	memcpy(&BMPstructurevariable.m_dwImportantcolors, bReadBuffer + 50, 4);
-
+	obj_helper.circularbyteshift(&BMPstructurevariable.m_wFiletype, sizeof(&BMPstructurevariable.m_wFiletype));
+	
 	if (obj_file_to_write.create(L"I:\\WrittenFile.txt", GENERIC_WRITE, CREATE_NEW) == FALSE)
 	{
 		dwErrCode = GetLastError();
@@ -63,4 +67,3 @@ int main()
 	return 0;
 }
 
-//Write clsas diagram of BMP class.
