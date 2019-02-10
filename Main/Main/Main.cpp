@@ -31,9 +31,9 @@ int main()
 		return EXIT_FAILURE;
 	}
 	obj_file_to_read.close();
-
-	memcpy(&BMPstructurevariable.m_wFiletype, bReadBuffer, 2);
-	memcpy(&BMPstructurevariable.m_dwSizeBMP, bReadBuffer+2, 4);
+	INT nReadOffset = 0;
+	memcpy(&BMPstructurevariable.m_wFiletype, bReadBuffer, nReadOffset); nReadOffset = 2
+	memcpy(&BMPstructurevariable.m_dwSizeBMP, bReadBuffer + nReadOffset, 4);
 	memcpy(&BMPstructurevariable.m_wReserved1, bReadBuffer + 6, 2);
 	memcpy(&BMPstructurevariable.m_wReserved2, bReadBuffer + 8, 2);
 	memcpy(&BMPstructurevariable.m_dwOffsetpixelarray, bReadBuffer + 10, 4);
@@ -50,6 +50,7 @@ int main()
 	memcpy(&BMPstructurevariable.m_dwImportantcolors, bReadBuffer + 50, 4);
 	obj_helper.circularbyteshift(&BMPstructurevariable.m_wFiletype, sizeof(&BMPstructurevariable.m_wFiletype));
 	
+	//Validation of BMP here
 	if (obj_file_to_write.create(L"I:\\WrittenFile.txt", GENERIC_WRITE, CREATE_NEW) == FALSE)
 	{
 		dwErrCode = GetLastError();

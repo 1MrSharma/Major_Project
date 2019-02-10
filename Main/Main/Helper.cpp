@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Helper.h"
 #include<Windows.h>
-WORD CHelper::circularbyteshift(PWORD pointer_to_MN, DWORD size_of_last_field)
+WORD CHelper::circularbyteshift(PWORD pBytes, DWORD dwSize,BYTE nTimes)
 {
 	return ' ';
 }

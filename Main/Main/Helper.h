@@ -3,6 +3,6 @@
 class CHelper
 {
 public:
-	WORD circularbyteshift(PWORD, DWORD);
+	WORD circularbyteshift(PWORD, DWORD,BYTE);
 };
 
