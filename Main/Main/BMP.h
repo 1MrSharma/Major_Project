@@ -1,11 +1,12 @@
 #pragma once
 #include<Windows.h>
+#include"BMPstructure.h"
 class CBMP
 {
 private:
-	BYTE * pbStructurepointer;
+	DWORD64 * pbStructurepointer;
 public:
-	void setStructurepointer(BYTE);
+	void setStructurepointer(BMPstructure* );
 	BOOL checkFiletype(WORD);
 	DWORD returnSizeBMP(DWORD);
 	DWORD returnOffsetpixelarray(DWORD);

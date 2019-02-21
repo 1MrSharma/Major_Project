@@ -15,12 +15,11 @@ int main()
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
 	CFile obj_file_to_read;// , obj_file_to_write;
 	CError obj_error_handler;
-	CHelper obj_helper;
-	BMPstructure obj_BMPstructure;
+//	CHelper obj_helper;
+	BMPstructure *pBMPstructure = new BMPstructure;
 	CBMP obj_BMP;
 	DWORD dwErrCode;
-	WORD g;
-	
+				
 	if (obj_file_to_read.create(L"I:\\Major_project.bmp", GENERIC_READ, OPEN_EXISTING) == FALSE)
 	{
 		dwErrCode = GetLastError();
@@ -35,27 +34,31 @@ int main()
 		return EXIT_FAILURE;
 	}
 	obj_file_to_read.close();
-	//INT nReadOffset = 0;
+	INT nReadOffset = 0;
+	//PROBLEM 2 &3 
+	//In 2nd ReadOffset is incrementing values
+	//3rd is that i have to setstructure pointer is it possible with object of the header BMPstructure 
+	memcpy(&(pBMPstructure->m_wFiletype), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
+	memcpy(&(pBMPstructure->m_dwSizeBMP), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_wReserved1), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
+	memcpy(&(pBMPstructure->m_wReserved2), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
+	memcpy(&(pBMPstructure->m_dwOffsetpixelarray), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_dwSizebitmapinfoheader), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_nBitmapwidth), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_nBitmapheight), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_wColorplanes), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
+	memcpy(&(pBMPstructure->m_wColordepth), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
+	memcpy(&(pBMPstructure->m_dwCompressionmethod), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_dwRawimagesize), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_dwHorizontalresolution), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_dwVerticalresolution), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_dwColorpallete), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
+	memcpy(&(pBMPstructure->m_dwImportantcolors), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
 	
-	obj_BMPstructure.setFiletype((WORD)memcpy(obj_BMPstructure.getFiletype, bReadBuffer, 2));
-	obj_BMPstructure.setSizeBMP((DWORD)memcpy(obj_BMPstructure.getSizeBMP, bReadBuffer + 2, 4));
-	obj_BMPstructure.setReserved1((WORD)memcpy(obj_BMPstructure.getReserved1, bReadBuffer + 6, 2));
-	obj_BMPstructure.setReserved2((WORD)memcpy(obj_BMPstructure.getReserved2, bReadBuffer + 8, 2));
-	obj_BMPstructure.setOffsetpixelarray((DWORD)memcpy(obj_BMPstructure.getOffsetpixelarray, bReadBuffer + 10, 4));
-	obj_BMPstructure.setSizebitmapinfoheader((DWORD)memcpy(obj_BMPstructure.getSizebitmapinfoheader, bReadBuffer + 14, 4));
-	obj_BMPstructure.setBitmapwidth((INT32)memcpy(obj_BMPstructure.getBitmapwidth, bReadBuffer + 18, 4));
-	obj_BMPstructure.setBitmapheight((INT32)memcpy(obj_BMPstructure.getBitmapheight, bReadBuffer + 22, 4));
-	obj_BMPstructure.setColorplanes((WORD)memcpy(obj_BMPstructure.getColorplanes, bReadBuffer + 26, 2));
-	obj_BMPstructure.setColordepth((WORD)memcpy(obj_BMPstructure.getColordepth, bReadBuffer + 28, 2));
-	obj_BMPstructure.setCompressionmethod((DWORD)memcpy(obj_BMPstructure.getCompressionmethod, bReadBuffer + 30, 4));
-	obj_BMPstructure.setRawimagesize((DWORD)memcpy(obj_BMPstructure.getRawimagesize, bReadBuffer + 34, 4));
-	obj_BMPstructure.setHorizontalresolution((DWORD)memcpy(obj_BMPstructure.getHorizontalresolution, bReadBuffer + 38, 4));
-	obj_BMPstructure.setVerticalresolution((DWORD)memcpy(obj_BMPstructure.getVerticalresolution, bReadBuffer + 42, 4));
-	obj_BMPstructure.setColorpallete((DWORD)memcpy(obj_BMPstructure.getColorpallete, bReadBuffer + 46, 4));
-	obj_BMPstructure.setImportantcolors((DWORD)memcpy(obj_BMPstructure.getImportantcolors, bReadBuffer + 50, 4));
+	obj_BMP.setStructurepointer(pBMPstructure);
 
-	g=obj_helper.circularbyteshift(obj_BMPstructure.getFiletype/*, sizeof(&BMPstructurevariable.m_wFiletype)*/);
-	obj_BMPstructure.setFiletype(g);
+	//g=obj_helper.circularbyteshift(obj_BMPstructure.getFiletype/*, sizeof(&BMPstructurevariable.m_wFiletype)*/);
+	//obj_BMPstructure.setFiletype(g);
 
 	//Validation of BMP here
 	/*if (obj_file_to_write.create(L"I:\\WrittenFile.txt", GENERIC_WRITE, CREATE_NEW) == FALSE)

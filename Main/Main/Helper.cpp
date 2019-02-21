@@ -3,7 +3,7 @@
 #include<Windows.h>
 #include<stdlib.h>
 WORD CHelper::circularbyteshift(WORD  wBytes)//, DWORD dwSize,BYTE nTimes)
-{
+{//Problem 4 her we have to shift the bytes as i am shifting bits 
 	
 	WORD t=wBytes >> 8;
 	return t;

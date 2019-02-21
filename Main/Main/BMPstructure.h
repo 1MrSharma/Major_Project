@@ -2,7 +2,7 @@
 #include<Windows.h>
 struct BMPstructure
 {
-private:
+public:
 	WORD m_wFiletype;
 	DWORD m_dwSizeBMP;
 	WORD m_wReserved1;
