@@ -1,25 +1,28 @@
-#pragma once
+#ifndef __BMP_H__
+#define __BMP_H__
 #include<Windows.h>
-#include"BMPstructure.h"
+
+#include "BMPstructure.h"
 class CBMP
 {
 private:
-	DWORD64 * pbStructurepointer;
+	BMPstructure *m_pStructurepointer;
 public:
-	void setStructurepointer(BMPstructure* );
-	BOOL checkFiletype(WORD);
-	DWORD returnSizeBMP(DWORD);
-	DWORD returnOffsetpixelarray(DWORD);
-	DWORD returnSizebitmapinfoheader(DWORD);
-	INT32 returnBitamapwidth(INT32);
-	INT32 returnBitmapheight(INT32);
-	WORD returnColorplanes(WORD);
-	WORD returnColordepth(WORD);
+	void setStructurepointer(BMPstructure*);
+	BOOL checkFiletype();
+	DWORD returnSizeBMP();
+	DWORD returnOffsetpixelarray();
+	DWORD returnSizebitmapinfoheader();
+	INT32 returnBitamapwidth();
+	INT32 returnBitmapheight();
+	WORD returnColorplanes();
+	WORD returnColordepth();
 	DWORD returnCompressionmethod();
-	DWORD returnRawimagesize(DWORD);
-	DWORD returnHorizontalresolution(DWORD);
-	DWORD returnVerticalresolution(DWORD);
-	DWORD returnColorpallete(DWORD);
-	DWORD returnImportantcolors(DWORD);
+	DWORD returnRawimagesize();
+	DWORD returnHorizontalresolution();
+	DWORD returnVerticalresolution();
+	DWORD returnColorpallete();
+	DWORD returnImportantcolors();
 };
 
+#endif
