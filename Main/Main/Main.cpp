@@ -13,7 +13,7 @@ int main()
 
 {
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
-	CFile obj_file_to_read;
+	CFile obj_file_to_read,obj_file_to_write1, obj_file_to_write2;
 	CError obj_error_handler;
 
 	BMPstructure *pBMPstructure = new BMPstructure;
@@ -36,6 +36,7 @@ int main()
 	obj_file_to_read.close();
 	INT nReadOffset = 0;
 	
+
 	memcpy(&(pBMPstructure->m_wFiletype), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
 	memcpy(&(pBMPstructure->m_dwSizeBMP), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
 	memcpy(&(pBMPstructure->m_wReserved1), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
@@ -56,7 +57,58 @@ int main()
 	obj_BMP.setStructurepointer(pBMPstructure);
 	if (obj_BMP.checkFiletype() == TRUE)
 	{
+		DWORD bsizeofBMP = pBMPstructure->getSizeBMP();
+		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;
+		int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE;
+		
+		if (obj_file_to_write1.create(L"I:\\24_bit_bitmap.bmp", GENERIC_READ, OPEN_EXISTING) == FALSE)
+		{
+			obj_file_to_write1.close();
+			obj_file_to_write2.close();
+			dwErrCode = GetLastError();
+			printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
+			
+			return EXIT_FAILURE;
+		}
+		if (obj_file_to_write2.create(L"I:\\Written_bitmap.bmp", GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
 
+
+		{
+			obj_file_to_write1.close();
+			obj_file_to_write2.close();
+			dwErrCode = GetLastError();
+			printf("The error message:-%ws", obj_error_handler.geterrordescription(dwErrCode));
+			printf("The error code:-%d", obj_error_handler.getErrCode());
+			return EXIT_FAILURE;
+		}
+		while (nSectors)
+		{
+			if (obj_file_to_write1.read(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+			{
+				obj_file_to_write1.close();
+				dwErrCode = GetLastError();
+				printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
+				return EXIT_FAILURE;
+			}
+
+			if (obj_file_to_write2.write(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+			{
+				obj_file_to_write2.close();
+				dwErrCode = GetLastError();
+				printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
+
+				return EXIT_FAILURE;
+			}
+			nSectors--;
+		}
+		if (obj_file_to_write1.read(bReadBuffer, nAdditional) == FALSE)
+		{
+			return EXIT_FAILURE;
+		}
+		if (obj_file_to_write2.write(bReadBuffer, nAdditional) == FALSE)
+		{
+			return EXIT_FAILURE;
+		}
 		printf("Valid BMP file.\n");
 		printf("Size of BMP file(in bytes):%d.\n", obj_BMP.returnSizeBMP());
 		printf("Offset pixel array:%d\n", obj_BMP.returnOffsetpixelarray());
