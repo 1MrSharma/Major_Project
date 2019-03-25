@@ -6,24 +6,23 @@
 #include"Error.h"
 #include"BMPstructure.h"
 #include"BMP.h"
-#include<C:\Users\Shubham Sharma\Desktop\1MrSharma\Major_Project\Main\Main\Helper.h>
+	
 const int nBUFFERSIZE = 1024;
 using namespace std;
-int main()
-
+int main(int argc,LPCTSTR *argv[])
 {
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
-	CFile obj_file_to_read,obj_file_to_write1, obj_file_to_write2;
+	CFile obj_file_to_read, obj_file_to_write;
 	CError obj_error_handler;
-
 	BMPstructure *pBMPstructure = new BMPstructure;
 	CBMP obj_BMP;
 	DWORD dwErrCode;
 				
-	if (obj_file_to_read.create(L"I:\\24_bit_bitmap.bmp", GENERIC_READ, OPEN_EXISTING) == FALSE)
+	if (obj_file_to_read.create(*argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)
 	{
 		dwErrCode = GetLastError();
 		printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
+		printf("\nError code %d", obj_error_handler.getErrCode());
 		return EXIT_FAILURE;
 	}
 
@@ -61,21 +60,19 @@ int main()
 		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;
 		int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE;
 		
-		if (obj_file_to_write1.create(L"I:\\24_bit_bitmap.bmp", GENERIC_READ, OPEN_EXISTING) == FALSE)
+		if (obj_file_to_read.create(*argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)
 		{
-			obj_file_to_write1.close();
-			obj_file_to_write2.close();
+			
 			dwErrCode = GetLastError();
 			printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
 			
 			return EXIT_FAILURE;
 		}
-		if (obj_file_to_write2.create(L"I:\\Written_bitmap.bmp", GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
+		if (obj_file_to_write.create(*argv[2], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
 
 
 		{
-			obj_file_to_write1.close();
-			obj_file_to_write2.close();
+			
 			dwErrCode = GetLastError();
 			printf("The error message:-%ws", obj_error_handler.geterrordescription(dwErrCode));
 			printf("The error code:-%d", obj_error_handler.getErrCode());
@@ -83,17 +80,19 @@ int main()
 		}
 		while (nSectors)
 		{
-			if (obj_file_to_write1.read(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+			if (obj_file_to_read.read(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
 			{
-				obj_file_to_write1.close();
+				obj_file_to_read.close();
+				obj_file_to_write.close();
 				dwErrCode = GetLastError();
 				printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
 				return EXIT_FAILURE;
 			}
 
-			if (obj_file_to_write2.write(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+			if (obj_file_to_write.write(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
 			{
-				obj_file_to_write2.close();
+				obj_file_to_read.close();
+				obj_file_to_write.close();
 				dwErrCode = GetLastError();
 				printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
 
@@ -101,12 +100,16 @@ int main()
 			}
 			nSectors--;
 		}
-		if (obj_file_to_write1.read(bReadBuffer, nAdditional) == FALSE)
+		if (obj_file_to_read.read(bReadBuffer, nAdditional) == FALSE)
 		{
-			return EXIT_FAILURE;
+			obj_file_to_read.close();
+			obj_file_to_write.close();
+			return EXIT_FAILURE; 
 		}
-		if (obj_file_to_write2.write(bReadBuffer, nAdditional) == FALSE)
+		if (obj_file_to_write.write(bReadBuffer, nAdditional) == FALSE)
 		{
+			obj_file_to_read.close();
+			obj_file_to_write.close();
 			return EXIT_FAILURE;
 		}
 		printf("Valid BMP file.\n");
@@ -148,6 +151,7 @@ int main()
 		if (obj_BMP.returnCompressionmethod() == 11)
 		{
 			printf("Value:11\tIdentified by:BI_CMYK\tCompression method:None/tComments:Only for Windows Metafile CMYK\n");
+
 		}
 		if (obj_BMP.returnCompressionmethod() == 12)
 		{
