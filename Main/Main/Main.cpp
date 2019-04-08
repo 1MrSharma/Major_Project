@@ -6,26 +6,24 @@
 #include"Error.h"
 #include"BMPstructure.h"
 #include"BMP.h"
-	
 const int nBUFFERSIZE = 1024;
 using namespace std;
-int main(int argc,LPCTSTR *argv[])
+int main(int argc,LPCTSTR *argv[])//Number of arguments less than 2 then program should prompt Usage: Main source_bitmap_file destination_bitmap_file
 {
+	printf("The number of command line argumeants are %d", argc);
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
 	CFile obj_file_to_read, obj_file_to_write;
 	CError obj_error_handler;
 	BMPstructure *pBMPstructure = new BMPstructure;
 	CBMP obj_BMP;
 	DWORD dwErrCode;
-				
-	if (obj_file_to_read.create(*argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)
+	if (obj_file_to_read.create(*argv[argc-1], GENERIC_READ, OPEN_EXISTING) == FALSE)//1
 	{
-		dwErrCode = GetLastError();
+		dwErrCode = GetLastError();//Source file cannot be opened.Failed to open verify it exists
 		printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
 		printf("\nError code %d", obj_error_handler.getErrCode());
 		return EXIT_FAILURE;
 	}
-
 	if (obj_file_to_read.read(bReadBuffer,CFile::m_knSECTORSIZE ) == FALSE)
 	{
 		dwErrCode = GetLastError();
@@ -34,8 +32,6 @@ int main(int argc,LPCTSTR *argv[])
 	}
 	obj_file_to_read.close();
 	INT nReadOffset = 0;
-	
-
 	memcpy(&(pBMPstructure->m_wFiletype), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
 	memcpy(&(pBMPstructure->m_dwSizeBMP), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
 	memcpy(&(pBMPstructure->m_wReserved1), bReadBuffer + nReadOffset, 2); nReadOffset += 2;
@@ -52,28 +48,21 @@ int main(int argc,LPCTSTR *argv[])
 	memcpy(&(pBMPstructure->m_dwVerticalresolution), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
 	memcpy(&(pBMPstructure->m_dwColorpallete), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
 	memcpy(&(pBMPstructure->m_dwImportantcolors), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
-	
 	obj_BMP.setStructurepointer(pBMPstructure);
 	if (obj_BMP.checkFiletype() == TRUE)
 	{
 		DWORD bsizeofBMP = pBMPstructure->getSizeBMP();
 		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;
 		int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE;
-		
-		if (obj_file_to_read.create(*argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)
+		if (obj_file_to_read.create(*argv[argc-1], GENERIC_READ, OPEN_EXISTING) == FALSE)//1
 		{
-			
 			dwErrCode = GetLastError();
 			printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
-			
 			return EXIT_FAILURE;
 		}
-		if (obj_file_to_write.create(*argv[2], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
-
-
+		if (obj_file_to_write.create(*argv[argc], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)//2
 		{
-			
-			dwErrCode = GetLastError();
+			dwErrCode = GetLastError();//Destination file does not exists
 			printf("The error message:-%ws", obj_error_handler.geterrordescription(dwErrCode));
 			printf("The error code:-%d", obj_error_handler.getErrCode());
 			return EXIT_FAILURE;
@@ -88,14 +77,12 @@ int main(int argc,LPCTSTR *argv[])
 				printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
 				return EXIT_FAILURE;
 			}
-
 			if (obj_file_to_write.write(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
 			{
 				obj_file_to_read.close();
 				obj_file_to_write.close();
 				dwErrCode = GetLastError();
 				printf("The error message:-%ws\n", obj_error_handler.geterrordescription(dwErrCode));
-
 				return EXIT_FAILURE;
 			}
 			nSectors--;
@@ -151,7 +138,6 @@ int main(int argc,LPCTSTR *argv[])
 		if (obj_BMP.returnCompressionmethod() == 11)
 		{
 			printf("Value:11\tIdentified by:BI_CMYK\tCompression method:None/tComments:Only for Windows Metafile CMYK\n");
-
 		}
 		if (obj_BMP.returnCompressionmethod() == 12)
 		{
@@ -166,7 +152,6 @@ int main(int argc,LPCTSTR *argv[])
 		printf("Vertical resolution(pixel per meter):%d\n", obj_BMP.returnVerticalresolution());
 		printf("Number of colors in color pallete:%d\n", obj_BMP.returnColorpallete());
 		printf("Important colors used:%d", obj_BMP.returnImportantcolors());
-		
 	}
 	else
 	{
@@ -174,4 +159,3 @@ int main(int argc,LPCTSTR *argv[])
 	}
 	return 0;
 }
-
