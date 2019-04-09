@@ -15,7 +15,7 @@ LPCTSTR CError::geterrordescription(void)
 	wchar_t szmessageBuffer[512] = {NULL};
 	if (m_dwErrCode)
 	{
-		dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, m_dwErrCode, LANG_SYSTEM_DEFAULT | LANG_USER_DEFAULT, (LPTSTR)&szmessageBuffer, NULL, NULL);
+		dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, m_dwErrCode, 0, (LPTSTR)&szmessageBuffer, NULL, NULL);
 		if (0 == dwChar)
 		{
 			return L"Failed to retrieve the error code.";

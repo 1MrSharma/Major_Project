@@ -4,11 +4,11 @@ class CFile
 {
 private:
 	HANDLE m_hFile;
-	LPCTSTR m_szFileName;
+	LPCSTR m_szFileName;
 public:
 	static const INT m_knSECTORSIZE = 512;
 public:
-	BOOL create(LPCTSTR,DWORD,DWORD);
+	BOOL create(LPCSTR,DWORD,DWORD);
 	void close();
 	BOOL read( LPVOID, INT);
 	BOOL write(LPVOID, INT);

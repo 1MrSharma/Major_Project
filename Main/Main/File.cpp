@@ -2,11 +2,11 @@
 #include "File.h"
 #include<cstdio>
 
-BOOL CFile::create(const LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
+BOOL CFile::create(const LPCSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
 {
 	HANDLE hFile = NULL;
 	
-	hFile = CreateFile(szFileName, dwDesiredAccess, FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE, NULL, dwcreationdisposition, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFileA(szFileName, dwDesiredAccess, FILE_SHARE_READ|FILE_SHARE_DELETE|FILE_SHARE_WRITE, NULL, dwcreationdisposition, FILE_ATTRIBUTE_NORMAL, NULL);
 	
 	if (hFile == INVALID_HANDLE_VALUE)
 		return FALSE;
