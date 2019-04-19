@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Error.h"
 #include<cstdio>
-
+#include <tchar.h>
 
 LPCTSTR CError::geterrordescription(const DWORD dwErrCode)
 {
@@ -12,13 +12,13 @@ LPCTSTR CError::geterrordescription(const DWORD dwErrCode)
 LPCTSTR CError::geterrordescription(void)
 {
 	DWORD dwChar;
-	wchar_t szmessageBuffer[512] = {NULL};
+	TCHAR szmessageBuffer[512] = {NULL};
 	if (m_dwErrCode)
 	{
-		dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, m_dwErrCode, 0, (LPTSTR)&szmessageBuffer, NULL, NULL);
+		dwChar = FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM , NULL, m_dwErrCode, LANG_USER_DEFAULT, szmessageBuffer, NULL, NULL);
 		if (0 == dwChar)
 		{
-			return L"Failed to retrieve the error code.";
+			return _T("Failed to retrieve the error code.");
 		}
 		return szmessageBuffer;
 	}
