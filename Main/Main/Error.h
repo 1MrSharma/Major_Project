@@ -6,9 +6,9 @@ private:
 	DWORD m_dwErrCode;
 	
 public:
-	LPCTSTR geterrordescription(void);
-	LPCTSTR geterrordescription(DWORD);
-	void setErrCode(DWORD);
-	DWORD getErrCode(void);
+	LPCTSTR fngeterrordescription(void);
+	LPCTSTR fngeterrordescription(DWORD);
+	void fnsetErrCode(DWORD);
+	DWORD fngetErrCode(void);
 };
 

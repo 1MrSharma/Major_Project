@@ -2,9 +2,20 @@
 #include "Helper.h"
 #include<Windows.h>
 #include<stdlib.h>
-WORD CHelper::circularbyteshift(WORD  wBytes)
+int CHelper::fnChangeEndianess(int nValue)
 {
-	
-	WORD t=wBytes >> 8;
-	return t;
+	int nRetval;
+	nRetval = nValue & 0xFF;
+	nRetval = (nRetval << 8) | ((nValue >> 8) & 0xFF);
+	nRetval = (nRetval << 8) | ((nValue >> 16) & 0xFF);
+	nRetval = (nRetval << 8) | ((nValue >> 24) & 0xFF);
+	return nRetval;
+}
+int CHelper::fnExtraBitmask(int nValue)
+{
+	return 0;
+}
+WORD CHelper::fnDecimalToHexadecimal()
+{
+	return 0;
 }

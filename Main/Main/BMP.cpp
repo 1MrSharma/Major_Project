@@ -3,68 +3,68 @@
 
 
 
-void CBMP::setStructurepointer(BMPstructure* Structurepointer)
+void CBMP::fnsetStructurepointer(BMPstructure* Structurepointer)
 {
 	m_pStructurepointer = Structurepointer;
 }
 
 
-BOOL CBMP::checkFiletype()
+BOOL CBMP::fncheckFiletype()
 {
-	return m_pStructurepointer->getFiletype() == 0x4D42;
+	return m_pStructurepointer->fngetFiletype() == 0x4D42;
 }
 
-DWORD CBMP::returnSizeBMP()
+DWORD CBMP::fnreturnSizeBMP()
 {
-	return m_pStructurepointer->getSizeBMP();
+	return m_pStructurepointer->fngetSizeBMP();
 }
 
-DWORD CBMP::returnOffsetpixelarray()
+DWORD CBMP::fnreturnOffsetpixelarray()
 {
-	return m_pStructurepointer->getOffsetpixelarray();
+	return m_pStructurepointer->fngetOffsetpixelarray();
 }
 
-DWORD CBMP::returnSizebitmapinfoheader()
+DWORD CBMP::fnreturnSizebitmapinfoheader()
 {
-	return m_pStructurepointer->getSizebitmapinfoheader();
+	return m_pStructurepointer->fngetSizebitmapinfoheader();
 }
-INT32 CBMP::returnBitamapwidth()
+INT32 CBMP::fnreturnBitamapwidth()
 {
-	return m_pStructurepointer->getBitmapwidth();
+	return m_pStructurepointer->fngetBitmapwidth();
 }
-INT32 CBMP::returnBitmapheight()
+INT32 CBMP::fnreturnBitmapheight()
 {
-	return m_pStructurepointer->getBitmapheight();
+	return m_pStructurepointer->fngetBitmapheight();
 }
-WORD CBMP::returnColorplanes()
+WORD CBMP::fnreturnColorplanes()
 {
-	return m_pStructurepointer->getColorplanes();
+	return m_pStructurepointer->fngetColorplanes();
 }
-WORD CBMP::returnColordepth()
+WORD CBMP::fnreturnColordepth()
 {
-	return m_pStructurepointer->getColordepth();
+	return m_pStructurepointer->fngetColordepth();
 }
-DWORD CBMP::returnCompressionmethod()
+DWORD CBMP::fnreturnCompressionmethod()
 {
-	return m_pStructurepointer->getCompressionmethod();
+	return m_pStructurepointer->fngetCompressionmethod();
 }
-DWORD CBMP::returnRawimagesize()
+DWORD CBMP::fnreturnRawimagesize()
 {
-	return m_pStructurepointer->getRawimagesize();
+	return m_pStructurepointer->fngetRawimagesize();
 }
-DWORD CBMP::returnHorizontalresolution()
+DWORD CBMP::fnreturnHorizontalresolution()
 {
-	return m_pStructurepointer->getHorizontalresolution();
+	return m_pStructurepointer->fngetHorizontalresolution();
 }
-DWORD CBMP::returnVerticalresolution()
+DWORD CBMP::fnreturnVerticalresolution()
 {
-	return m_pStructurepointer->getVerticalresolution();
+	return m_pStructurepointer->fngetVerticalresolution();
 }
-DWORD CBMP::returnColorpallete()
+DWORD CBMP::fnreturnColorpallete()
 {
-	return m_pStructurepointer->getColorpallete();
+	return m_pStructurepointer->fngetColorpalette();
 }
-DWORD CBMP::returnImportantcolors()
+DWORD CBMP::fnreturnImportantcolors()
 {
-	return m_pStructurepointer->getImportantcolors();
+	return m_pStructurepointer->fngetImportantcolors();
 }

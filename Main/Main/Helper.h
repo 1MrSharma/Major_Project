@@ -3,6 +3,9 @@
 class CHelper
 {
 public:
-	WORD circularbyteshift(WORD);//, DWORD,BYTE);
+	
+	WORD fnDecimalToHexadecimal();
+	int fnChangeEndianess(int);
+	int fnExtraBitmask(int);
 };
 

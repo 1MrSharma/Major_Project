@@ -21,131 +21,131 @@ public:
 	DWORD m_dwColorpallete;
 	DWORD m_dwImportantcolors;
 public:
-	void setFiletype(WORD Filetype)
+	void fnsetFiletype(WORD Filetype)
 	{
 		m_wFiletype = Filetype;
 	}
-	void setSizeBMP(DWORD SizeBMP)
+	void fnsetSizeBMP(DWORD SizeBMP)
 	{
 		m_dwSizeBMP = SizeBMP;
 	}
-	void setReserved1(WORD Reserved1)
+	void fnsetReserved1(WORD Reserved1)
 	{
 		m_wReserved1 = Reserved1;
 	}
-	void setReserved2(WORD Reserved2)
+	void fnsetReserved2(WORD Reserved2)
 	{
 		m_wReserved2 = Reserved2;
 	}
-	void setOffsetpixelarray(DWORD Offsetpixelarray)
+	void fnsetOffsetpixelarray(DWORD Offsetpixelarray)
 	{
 		m_dwOffsetpixelarray = Offsetpixelarray;
 	}
-	void setSizebitmapinfoheader(DWORD Sizebitmapinfoheader)
+	void fnsetSizebitmapinfoheader(DWORD Sizebitmapinfoheader)
 	{
 		m_dwSizebitmapinfoheader = Sizebitmapinfoheader;
 	}
-	void setBitmapwidth(INT32 Bitmapwidth)
+	void fnsetBitmapwidth(INT32 Bitmapwidth)
 	{
 		m_nBitmapwidth = Bitmapwidth;
 	}
-	void setBitmapheight(INT32 Bitmapheight)
+	void fnsetBitmapheight(INT32 Bitmapheight)
 	{
 		m_nBitmapheight = Bitmapheight;
 	}
-	void setColorplanes(WORD Colorplanes)
+	void fnsetColorplanes(WORD Colorplanes)
 	{
 		m_wColorplanes = Colorplanes;
 	}
-	void setColordepth(WORD Colordepth)
+	void fnsetColordepth(WORD Colordepth)
 	{
 		m_wColordepth = Colordepth;
 	}
-	void setCompressionmethod(DWORD Compressionmethod)
+	void fnsetCompressionmethod(DWORD Compressionmethod)
 	{
 		m_dwCompressionmethod = Compressionmethod;
 	}
-	void setRawimagesize(DWORD Rawimagesize)
+	void fnsetRawimagesize(DWORD Rawimagesize)
 	{
 		m_dwRawimagesize = Rawimagesize;
 	}
-	void setHorizontalresolution(DWORD Horizontalresolution)
+	void fnsetHorizontalresolution(DWORD Horizontalresolution)
 	{
 		m_dwHorizontalresolution = Horizontalresolution;
 	}
-	void setVerticalresolution(DWORD Verticalresolution)
+	void fnsetVerticalresolution(DWORD Verticalresolution)
 	{
 		m_dwVerticalresolution = Verticalresolution;
 	}
-	void setColorpallete(DWORD Colorpallete)
+	void fnsetColorpallete(DWORD Colorpallete)
 	{
 		m_dwColorpallete = Colorpallete;
 	}
-	void setImportantcolors(DWORD Importantcolors)
+	void fnsetImportantcolors(DWORD Importantcolors)
 	{
 		m_dwImportantcolors = Importantcolors;
 	}
-	WORD getFiletype()
+	WORD fngetFiletype()
 	{
 		return m_wFiletype;
 	}
-	DWORD getSizeBMP()
+	DWORD fngetSizeBMP()
 	{
 		return m_dwSizeBMP;
 	}
-	WORD getReserved1()
+	WORD fngetReserved1()
 	{
 		return m_wReserved1;
 	}
-	WORD getReserved2()
+	WORD fngetReserved2()
 	{
 		return m_wReserved2;
 	}
-	DWORD getOffsetpixelarray()
+	DWORD fngetOffsetpixelarray()
 	{
 		return m_dwOffsetpixelarray;
 	}
-	DWORD getSizebitmapinfoheader()
+	DWORD fngetSizebitmapinfoheader()
 	{
 		return m_dwSizebitmapinfoheader;
 	}
-	INT32 getBitmapwidth()
+	INT32 fngetBitmapwidth()
 	{
 		return m_nBitmapwidth;
 	}
-	INT32 getBitmapheight()
+	INT32 fngetBitmapheight()
 	{
 		return m_nBitmapheight;
 	}
-	WORD getColorplanes()
+	WORD fngetColorplanes()
 	{
 		return m_wColorplanes;
 	}
-	WORD getColordepth()
+	WORD fngetColordepth()
 	{
 		return m_wColordepth;
 	}
-	DWORD getCompressionmethod()
+	DWORD fngetCompressionmethod()
 	{
 		return m_dwCompressionmethod;
 	}
-	DWORD getRawimagesize()
+	DWORD fngetRawimagesize()
 	{
 		return m_dwRawimagesize;
 	}
-	DWORD getHorizontalresolution()
+	DWORD fngetHorizontalresolution()
 	{
 		return m_dwHorizontalresolution;
 	}
-	DWORD getVerticalresolution()
+	DWORD fngetVerticalresolution()
 	{
 		return m_dwVerticalresolution;
 	}
-	DWORD getColorpallete()
+	DWORD fngetColorpalette()
 	{
 		return m_dwColorpallete;
 	}
-	DWORD getImportantcolors()
+	DWORD fngetImportantcolors()
 	{
 		return m_dwImportantcolors;
 	}

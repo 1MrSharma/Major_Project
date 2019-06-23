@@ -3,13 +3,13 @@
 #include<cstdio>
 #include <tchar.h>
 
-LPCTSTR CError::geterrordescription(const DWORD dwErrCode)
+LPCTSTR CError::fngeterrordescription(const DWORD dwErrCode)
 {
-	setErrCode(dwErrCode);
-	return geterrordescription();
+	fnsetErrCode(dwErrCode);
+	return fngeterrordescription();
 }
 
-LPCTSTR CError::geterrordescription(void)
+LPCTSTR CError::fngeterrordescription(void)
 {
 	DWORD dwChar;
 	TCHAR szmessageBuffer[512] = {NULL};
@@ -24,12 +24,12 @@ LPCTSTR CError::geterrordescription(void)
 	}
 }
 
-void CError::setErrCode(const DWORD dwErrCode)
+void CError::fnsetErrCode(const DWORD dwErrCode)
 {
 	m_dwErrCode = dwErrCode;
 }
 
-DWORD CError::getErrCode()
+DWORD CError::fngetErrCode()
 {
 	return m_dwErrCode;
 }

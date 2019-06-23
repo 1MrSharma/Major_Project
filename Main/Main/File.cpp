@@ -2,7 +2,7 @@
 #include "File.h"
 #include<cstdio>
 
-BOOL CFile::create(const LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
+BOOL CFile::fnCreate(const LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
 {
 	HANDLE hFile = NULL;
 	
@@ -11,33 +11,33 @@ BOOL CFile::create(const LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreati
 	if (hFile == INVALID_HANDLE_VALUE)
 		return FALSE;
 	m_szFileName = szFileName;
-	setHandle(hFile);
+	fnSetHandle(hFile);
 	return TRUE;
 }
 
-void CFile::close()
+void CFile::fnClose()
 {
 	CloseHandle(m_hFile);
 	m_hFile = NULL;
 }
 
-void CFile::setHandle(const HANDLE hFile)
+void CFile::fnSetHandle(const HANDLE hFile)
 {
 	m_hFile = hFile;
 	
 }
 
-HANDLE CFile::getHandle()const
+HANDLE CFile::fnGetHandle()const
 {
 	return m_hFile;
 }
 
-BOOL CFile::read(LPVOID address,const INT limit)
+BOOL CFile::fnRead(LPVOID address,const INT limit)
 {
 	DWORD dwByteRead;
 	if (FALSE == (ReadFile(m_hFile, address, limit, &dwByteRead, NULL)))
 	{
-		close();
+		fnClose();
 		return FALSE;
 	}
 	else
@@ -47,12 +47,12 @@ BOOL CFile::read(LPVOID address,const INT limit)
 
 }
 
-BOOL CFile::write(LPVOID address, INT limit)
+BOOL CFile::fnWrite(LPVOID address, INT limit)
 {
 	DWORD dwByteWrite;
 	if (FALSE == (WriteFile(m_hFile, address, limit, &dwByteWrite, NULL)))
 	{
-		close();
+		fnClose();
 		return FALSE;
 	}
 	else

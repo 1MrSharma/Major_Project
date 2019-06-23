@@ -8,10 +8,11 @@ private:
 public:
 	static const INT m_knSECTORSIZE = 512;
 public:
-	BOOL create(LPCTSTR,DWORD,DWORD);
-	void close();
-	BOOL read( LPVOID, INT);
-	BOOL write(LPVOID, INT);
-	inline void setHandle(HANDLE);
-	inline HANDLE getHandle(void)const;
+	BOOL fnCreate(LPCTSTR,DWORD,DWORD);
+	void fnClose();
+	BOOL fnRead( LPVOID, INT);
+	BOOL fnWrite(LPVOID, INT);
+	inline void fnSetHandle(HANDLE);
+	inline HANDLE fnGetHandle(void)const;
+
 };
