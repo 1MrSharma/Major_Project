@@ -10,6 +10,9 @@ private:
 public:
 	void fnsetStructurepointer(BMPstructure*);
 	BOOL fncheckFiletype();
+	WORD fnreturnFiletype();
+	WORD fnreturnReserved1();
+	WORD fnreturnReserved2();
 	DWORD fnreturnSizeBMP();
 	DWORD fnreturnOffsetpixelarray();
 	DWORD fnreturnSizebitmapinfoheader();

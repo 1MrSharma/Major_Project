@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "File.h"
-#include<cstdio>
 
 BOOL CFile::fnCreate(const LPCTSTR szFileName,DWORD dwDesiredAccess,DWORD dwcreationdisposition) 
 {
@@ -27,7 +26,7 @@ void CFile::fnSetHandle(const HANDLE hFile)
 	
 }
 
-HANDLE CFile::fnGetHandle()const
+HANDLE CFile::fnGetHandle()//inline HANDLE CFile::fnGetHandle()const
 {
 	return m_hFile;
 }

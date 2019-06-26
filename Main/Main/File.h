@@ -13,6 +13,6 @@ public:
 	BOOL fnRead( LPVOID, INT);
 	BOOL fnWrite(LPVOID, INT);
 	inline void fnSetHandle(HANDLE);
-	inline HANDLE fnGetHandle(void)const;
+	HANDLE fnGetHandle(); //inline HANDLE fnGetHandle(void)const
 
 };

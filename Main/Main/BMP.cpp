@@ -8,7 +8,20 @@ void CBMP::fnsetStructurepointer(BMPstructure* Structurepointer)
 	m_pStructurepointer = Structurepointer;
 }
 
+WORD CBMP::fnreturnFiletype()
+{
+	return m_pStructurepointer->fngetFiletype();
+}
 
+WORD CBMP::fnreturnReserved1()
+{
+	return m_pStructurepointer->fngetReserved1();
+}
+
+WORD CBMP::fnreturnReserved2()
+{
+	return m_pStructurepointer->fngetReserved2();
+}
 BOOL CBMP::fncheckFiletype()
 {
 	return m_pStructurepointer->fngetFiletype() == 0x4D42;

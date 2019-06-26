@@ -1,21 +1,21 @@
 #include "pch.h"
 #include <iostream>
 #include<tchar.h>
+#include<tchar.h>
+#include<cstdio>
+#include<vector>
+#include"Helper.h"
 #include"BMP.h"
 #include"File.h"
 #include"Error.h"
 #include"Cmdline.h"
-#include<tchar.h>
-#include<cstdio>
-#include"Helper.h"
 
 const int nBUFFERSIZE = 1024;
 using namespace std;
-
 int main(int argc,TCHAR *argv[])
 {
 	CCmdLine obj_cmdline;
-	int nFlag = 0;
+	int nFlagOptions = 0;
 	if (obj_cmdline.fnCheckEndingCharofBMP(argv[1]) == FALSE)
 	{
 		return 0;
@@ -30,10 +30,10 @@ int main(int argc,TCHAR *argv[])
 		 {
 			 return 0;
 		 }
-		 nFlag = 1;
+		 nFlagOptions = 1;
 	}
 	CBMP obj_BMP;
-	CFile obj_file_to_read, obj_file_to_write,obj_file_to_write_tempFile;
+	CFile obj_file_to_read, obj_file_to_write;
 	CError obj_error_handler;
 	DWORD dwErrCode;
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
@@ -74,16 +74,20 @@ int main(int argc,TCHAR *argv[])
 	memcpy(&(pBMPstructure->m_dwImportantcolors), bReadBuffer + nReadOffset, 4); nReadOffset += 4;
 	string str[] = { _T("-h1"),_T("-h2"),_T("-i"),_T("-p"),_T("-o"),_T("-bw") };
 	int nIterator;
-	if (nFlag == 0) {  nIterator = 2; }
+	if (nFlagOptions == 0) {  nIterator = 2; }
 	else { nIterator = 3; }
-	if (str[0]==argv[nIterator])
+	if (str[0]==argv[nIterator])//-h1
 	{
-		_tprintf(_T("%x %d %d %d %d",pBMPstructure->fngetFiletype,pBMPstructure->fngetSizeBMP,pBMPstructure->fngetReserved1,pBMPstructure->fngetReserved2,pBMPstructure->fngetOffsetpixelarray));
+		cout << hex << obj_BMP.fnreturnFiletype()<< " "<<obj_BMP.fnreturnSizeBMP()<< " " << obj_BMP.fnreturnReserved1()<< " " << obj_BMP.fnreturnReserved2()<< " " << obj_BMP.fnreturnOffsetpixelarray();
+		return 0;
 	}
-	/*if(str[1]==argv[nIterator])
-	{ }*/
-	if (argv[nIterator] == str[2])
+	if(str[1]==argv[nIterator])//-h2
 	{
+		cout << obj_BMP.fnreturnSizebitmapinfoheader() << " " << obj_BMP.fnreturnBitamapwidth() << " " << obj_BMP.fnreturnBitmapheight() << " " << obj_BMP.fnreturnColorplanes() << " " << obj_BMP.fnreturnColordepth() << " " << obj_BMP.fnreturnCompressionmethod() << " " << obj_BMP.fnreturnRawimagesize() << " " << obj_BMP.fnreturnHorizontalresolution() << " " << obj_BMP.fnreturnVerticalresolution() << " " << obj_BMP.fnreturnColorpallete() << " " << obj_BMP.fnreturnImportantcolors();
+		return 0;
+	}
+	if (argv[nIterator] == str[2])//-i
+	{		
 		if (obj_BMP.fncheckFiletype() == TRUE)
 		{
 			_tprintf(_T("---------------------------------------------------------------------------------------------\n"));
@@ -91,7 +95,7 @@ int main(int argc,TCHAR *argv[])
 			_tprintf(_T("---------------------------------------------------------------------------------------------\n"));
 			_tprintf(_T("\t\t\t\tInformation of BMP image file\n\n"));
 			_tprintf(_T("\tSize of BMP file(in bytes) :\t\t\t%u\n"), obj_BMP.fnreturnSizeBMP());
-			_tprintf(_T("\tOffset pixel array(in hexadecimal) :\t\t%d\n"), obj_BMP.fnreturnOffsetpixelarray());
+			_tprintf(_T("\tOffset pixel array :\t\t\t%d\n"), obj_BMP.fnreturnOffsetpixelarray());
 			_tprintf(_T("\tSize of Bitmap info header :\t\t\t%d\n"), obj_BMP.fnreturnSizebitmapinfoheader());
 			_tprintf(_T("\tBitmap width in pixels :\t\t\t%d\n"), obj_BMP.fnreturnBitamapwidth());
 			_tprintf(_T("\tBitmap height in pixels :\t\t\t%d\n"), obj_BMP.fnreturnBitmapheight());
@@ -146,18 +150,89 @@ int main(int argc,TCHAR *argv[])
 			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 
 		}
-
 		else
 		{
 			_tprintf(_T("---------------------------------------------------------------------------------------------\n"));
 			_tprintf(_T("\n\n\t\t\t\tNot a valid BMP image file.\n"));
 			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
-
 		}
+		return 0;
 	}
-	/*if(argv[nIterator]==str[3])
-	{ }*/
-	if (argv[nIterator] == str[4])
+	if(argv[nIterator]==str[3])//-p
+	{
+		DWORD bsizeofBMP = pBMPstructure->fngetSizeBMP();
+		bsizeofBMP -= obj_BMP.fnreturnOffsetpixelarray();
+		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;
+		int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE;
+		int nFlagPixelArray = 1;
+		if (obj_file_to_read.fnCreate(argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)
+		{
+			dwErrCode = GetLastError();
+			_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+			return EXIT_FAILURE;
+		}
+		if (obj_file_to_write.fnCreate(argv[2], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
+		{
+			dwErrCode = GetLastError();
+			_tprintf(_T("\n\tThe error message:-%ws"), obj_error_handler.fngeterrordescription(dwErrCode));
+			_tprintf(_T("\n\tThe error code:-%d"), obj_error_handler.fngetErrCode());
+			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+			return EXIT_FAILURE;
+		}
+		while(nSectors)
+		{
+			if (nFlagPixelArray == 1)
+			{
+				DWORD dwptr = SetFilePointer(obj_file_to_read.fnGetHandle(), obj_BMP.fnreturnOffsetpixelarray(), NULL, FILE_BEGIN);
+				if (dwptr == INVALID_SET_FILE_POINTER)
+				{
+					dwErrCode = GetLastError();
+					_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+					return EXIT_FAILURE;
+				}
+			}
+				if (obj_file_to_read.fnRead(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+				{
+					obj_file_to_read.fnClose();
+					obj_file_to_write.fnClose();
+					dwErrCode = GetLastError();
+					_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+					_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+					return EXIT_FAILURE;
+				}
+				if (obj_file_to_write.fnWrite(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+				{
+					obj_file_to_read.fnClose();
+					obj_file_to_write.fnClose();
+					dwErrCode = GetLastError();
+					_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+					_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+					return EXIT_FAILURE;
+				}
+				--nFlagPixelArray;
+			
+
+			nSectors--;
+		}
+		if (obj_file_to_read.fnRead(bReadBuffer, nAdditional) == FALSE)
+		{
+			obj_file_to_read.fnClose();
+			obj_file_to_write.fnClose();
+			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+			return EXIT_FAILURE;
+		}
+		if (obj_file_to_write.fnWrite(bReadBuffer, nAdditional) == FALSE)
+		{
+			obj_file_to_read.fnClose();
+			obj_file_to_write.fnClose();
+			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+			return EXIT_FAILURE;
+		}
+
+		return 0;
+	}
+	if (argv[nIterator] == str[4])//-o
 	{
 		DWORD bsizeofBMP = pBMPstructure->fngetSizeBMP();
 		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;
@@ -197,6 +272,7 @@ int main(int argc,TCHAR *argv[])
 				_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 				return EXIT_FAILURE;
 			}
+
 			nSectors--;
 		}
 		if (obj_file_to_read.fnRead(bReadBuffer, nAdditional) == FALSE)
@@ -213,52 +289,149 @@ int main(int argc,TCHAR *argv[])
 			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 			return EXIT_FAILURE;
 		}
+		return 0;
 	}
-	if (argv[nIterator] == str[5])
+	if (argv[nIterator] == str[5])//-bw
 	{
 		int nBitmapImageWidth = pBMPstructure->fngetBitmapwidth();
 		int nRowSize = ((nBitmapImageWidth + 31) / 32)*4;
 		int nSizeRawBitmap = nRowSize * (pBMPstructure->fngetBitmapheight());
 		int nSizeBMP = nSizeRawBitmap + 62;
 		bReadBuffer[0] = pBMPstructure->fngetFiletype();
-		bReadBuffer[2] = nSizeBMP;//Debugging
+		bReadBuffer[2] = nSizeBMP;//Error Debugging
 		bReadBuffer[6] = pBMPstructure->fngetReserved1();
 		bReadBuffer[8] = pBMPstructure->fngetReserved2();
 		bReadBuffer[10] = 0x3E; bReadBuffer[14] = 0x28;
 		bReadBuffer[18] = nBitmapImageWidth;
 		bReadBuffer[22] = pBMPstructure->fngetBitmapheight();
 		bReadBuffer[26] = pBMPstructure->fngetColorplanes(); bReadBuffer[28] = 1; bReadBuffer[30] = pBMPstructure->fngetCompressionmethod();
-		bReadBuffer[34] = nSizeRawBitmap;//Debugging
+		bReadBuffer[34] = nSizeRawBitmap;//Error Debugging
 		bReadBuffer[38] = pBMPstructure->fngetHorizontalresolution(); bReadBuffer[42] = pBMPstructure->fngetVerticalresolution();
 		bReadBuffer[46] = pBMPstructure->fngetColorpalette(); bReadBuffer[50] = pBMPstructure->fngetImportantcolors();
 		bReadBuffer[54] = 0x00; bReadBuffer[55] = 0x00; bReadBuffer[56] = 0x00; bReadBuffer[57] = 0x00;
 		bReadBuffer[58] = 0xff; bReadBuffer[59] = 0xff; bReadBuffer[60] = 0xff; bReadBuffer[61] = 0x00;
-		//printf("\n%d %d %d %d %d %d %d %d %d %d %d %d \n%d %d %d %d %d %d %d %d %d %d %d %d",bReadBuffer[0],nSizeBMP,bReadBuffer[6], bReadBuffer[8],bReadBuffer[10],bReadBuffer[14],nBitmapImageWidth, bReadBuffer[22], bReadBuffer[26], bReadBuffer[28], bReadBuffer[30], nSizeRawBitmap, bReadBuffer[38], bReadBuffer[42], bReadBuffer[46], bReadBuffer[50], bReadBuffer[54], bReadBuffer[55], bReadBuffer[56], bReadBuffer[57], bReadBuffer[58], bReadBuffer[59], bReadBuffer[60], bReadBuffer[61]);
-		if (obj_file_to_write.fnCreate(argv[2], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)//destination
+		int nLineLengthColoured, nPaddingColoured;
+		int nByteBlackAndWhite, nPaddingBlackAndWhite, nLineLengthBlackAndWhite;
+		if (obj_BMP.fnreturnColordepth() == 24 )//8,16
 		{
-			dwErrCode = GetLastError();
-			_tprintf(_T("\n\tThe error message:-%ws"), obj_error_handler.fngeterrordescription(dwErrCode));
-			_tprintf(_T("\n\tThe error code:-%d"), obj_error_handler.fngetErrCode());
-			return EXIT_FAILURE;
+			if (((obj_BMP.fnreturnBitamapwidth() * (obj_BMP.fnreturnColordepth() / 8)) % 4) != 0)
+			{
+				nPaddingColoured = 4 - ((obj_BMP.fnreturnBitamapwidth() * (obj_BMP.fnreturnColordepth()) / 8) % 4);
+			}
+			else 
+			{
+				nPaddingColoured = 0;
+			}
+			nLineLengthColoured = (obj_BMP.fnreturnBitamapwidth() * (obj_BMP.fnreturnColordepth() / 8)) + nPaddingColoured;
 		}
-		if (obj_file_to_write.fnWrite(bReadBuffer, 62) == FALSE)//object to the converted onochrome is obj_file_to_write
+		if ((obj_BMP.fnreturnBitamapwidth() % 8) != 0)
 		{
-			obj_file_to_write.fnClose();
+			nByteBlackAndWhite = obj_BMP.fnreturnBitamapwidth() / 8;
+		}
+		else {
+			nByteBlackAndWhite = obj_BMP.fnreturnBitamapwidth() / 8 + 1;
+		}
+		if ((nByteBlackAndWhite % 4) != 0)
+		{
+			nPaddingBlackAndWhite = 4 - (nByteBlackAndWhite % 4);
+		}
+		else {
+			nPaddingBlackAndWhite = 0;
+		}
+		nLineLengthBlackAndWhite = nByteBlackAndWhite + nPaddingBlackAndWhite;
+		DWORD bsizeofBMP = pBMPstructure->fngetSizeBMP();
+		bsizeofBMP -= obj_BMP.fnreturnOffsetpixelarray();
+		int nSectors = (bsizeofBMP-obj_BMP.fnreturnOffsetpixelarray()) / nLineLengthColoured;
+		int nFlagHeader = 1,nFlagPixelArray=1;
+		if (obj_file_to_read.fnCreate(argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)
+		{
 			dwErrCode = GetLastError();
 			_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 			return EXIT_FAILURE;
 		}
-		if (obj_file_to_read.fnCreate(argv[1], GENERIC_READ, OPEN_EXISTING) == FALSE)//object to source is obj_file_to_read
+		if (obj_file_to_write.fnCreate(argv[2], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
 		{
 			dwErrCode = GetLastError();
 			_tprintf(_T("\n\tThe error message:-%ws"), obj_error_handler.fngeterrordescription(dwErrCode));
 			_tprintf(_T("\n\tThe error code:-%d"), obj_error_handler.fngetErrCode());
+			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 			return EXIT_FAILURE;
 		}
-		
+		while (nSectors)
+		{
+			if (nFlagHeader == 1)
+			{
+				if (obj_file_to_write.fnWrite(bReadBuffer, 62) == FALSE)//To write HEADERS to destination file
+				{
+					obj_file_to_write.fnClose();
+					dwErrCode = GetLastError();
+					_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+					return EXIT_FAILURE;
+				}
+				--nFlagHeader;
+			}
+			BYTE bNewReadBuffer[4096] = { 0 };
+			if (nFlagPixelArray == 1)
+			{
+				DWORD dwptr = SetFilePointer(obj_file_to_read.fnGetHandle(), obj_BMP.fnreturnOffsetpixelarray(), NULL, FILE_BEGIN);
+				if (dwptr == INVALID_SET_FILE_POINTER)
+				{
+					dwErrCode = GetLastError();
+					_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+					return EXIT_FAILURE;
+				}
+				--nFlagPixelArray;
+			}
+			if (obj_file_to_read.fnRead(bNewReadBuffer, nLineLengthColoured) == FALSE)
+			{
+				obj_file_to_read.fnClose();
+				obj_file_to_write.fnClose();
+				dwErrCode = GetLastError();
+				_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+				_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+				return EXIT_FAILURE;
+			}
+			
+			BYTE bMonoBuffer[128] = { 0 };
+			int nMonoBytes = ((nLineLengthColoured - nPaddingColoured) / 3 ) / (nLineLengthBlackAndWhite - nPaddingBlackAndWhite);//3 is BGR values 
+			int nMonoAdditional= ((nLineLengthColoured - nPaddingColoured) / 3) % (nLineLengthBlackAndWhite - nPaddingBlackAndWhite);
+			int nIteratorbNewReadBuffer = 0;
+			while (nMonoBytes)//nMonoBytes specifies how many times will the bMonoBuffer will be filled
+			{
+				for (int i = 0; i < (nLineLengthBlackAndWhite - nPaddingBlackAndWhite); i++)
+				{
+					bMonoBuffer[i] = (bNewReadBuffer[nIteratorbNewReadBuffer] + bNewReadBuffer[nIteratorbNewReadBuffer + 1] + bNewReadBuffer[nIteratorbNewReadBuffer + 2])/3;
+					nIteratorbNewReadBuffer += 3;
+				}
+				if (nPaddingBlackAndWhite != 0)
+				{
+					for (int i = (nLineLengthBlackAndWhite - nPaddingBlackAndWhite); i < nLineLengthBlackAndWhite; i++)
+					{
+						bMonoBuffer[i] = 00;
+					}
+				}
+				if (obj_file_to_write.fnWrite(bMonoBuffer, nLineLengthBlackAndWhite) == FALSE)
+				{
+					obj_file_to_read.fnClose();
+					obj_file_to_write.fnClose();
+					dwErrCode = GetLastError();
+					_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+					_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+					return EXIT_FAILURE;
+				}
+				nMonoBytes--;
+			}
+			if (nMonoAdditional != 0)
+			{
+				for (int i = 0; i < nMonoAdditional; i++)
+				{
+					bMonoBuffer[i] = ( bNewReadBuffer[nIteratorbNewReadBuffer] + bNewReadBuffer[nIteratorbNewReadBuffer + 1] + bNewReadBuffer[nIteratorbNewReadBuffer + 2]) / 3;
+				}
+				nMonoAdditional--;
+			}
+			nSectors--;
+		}
+		return 0;
 	}
-	
-	
-	return 0;
 }
-
