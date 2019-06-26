@@ -392,7 +392,6 @@ int main(int argc,TCHAR *argv[])
 				_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 				return EXIT_FAILURE;
 			}
-			
 			BYTE bMonoBuffer[128] = { 0 };
 			int nMonoBytes = ((nLineLengthColoured - nPaddingColoured) / 3 ) / (nLineLengthBlackAndWhite - nPaddingBlackAndWhite);//3 is BGR values 
 			int nMonoAdditional= ((nLineLengthColoured - nPaddingColoured) / 3) % (nLineLengthBlackAndWhite - nPaddingBlackAndWhite);
