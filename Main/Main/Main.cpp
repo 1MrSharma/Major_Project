@@ -36,7 +36,7 @@ int main(int argc,TCHAR *argv[])
 		return EXIT_FAILURE;
 	}
 	CBMP obj_BMP;//object to BMP.cpp
-	CFile obj_file_to_read, obj_file_to_write;//object to FILE.cpp with read and write conditions
+	CFile obj_file_to_read, obj_file_to_write, obj_file_to_write_tempFile, obj_file_to_read_tempFile;//object to FILE.cpp with read and write conditions
 	CError obj_error_handler;//object to Error.cpp
 	DWORD dwErrCode;//Used for storing last error code
 	BYTE bReadBuffer[nBUFFERSIZE] = { 0 };
@@ -175,6 +175,26 @@ int main(int argc,TCHAR *argv[])
 		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;
 		int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE;
 		int nFlagPixelArray = 1;
+		DWORD dwRetVal = 0;
+		UINT uRetVal = 0;
+		TCHAR szTempFileName[MAX_PATH];
+		TCHAR lpTempPathBuffer[MAX_PATH];
+		dwRetVal = GetTempPath(MAX_PATH, lpTempPathBuffer);
+		if (dwRetVal > (MAX_PATH + 1) || (dwRetVal == 0))
+		{
+			obj_file_to_read.fnClose();
+			dwErrCode = GetLastError();
+			_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+			return EXIT_FAILURE;
+		}
+		uRetVal = GetTempFileName(lpTempPathBuffer, TEXT("MAIN"), 0, szTempFileName);
+		if (uRetVal == 0)
+		{
+			obj_file_to_read.fnClose();
+			dwErrCode = GetLastError();
+			_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+			return EXIT_FAILURE;
+		}
 		if (obj_file_to_read.fnCreate(argv[2], GENERIC_READ, OPEN_EXISTING) == FALSE)
 		{
 			dwErrCode = GetLastError();//Retriving the last error code
@@ -183,12 +203,11 @@ int main(int argc,TCHAR *argv[])
 			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 			return EXIT_FAILURE;
 		}
-		if (obj_file_to_write.fnCreate(argv[3], GENERIC_WRITE, CREATE_ALWAYS) == FALSE)
+		if (obj_file_to_write_tempFile.fnCreate((LPTSTR)szTempFileName, GENERIC_WRITE, CREATE_ALWAYS) == FALSE)//object to the temporary filename is obj_file_to_write_tempFile
 		{
+			obj_file_to_write_tempFile.fnClose();
 			dwErrCode = GetLastError();
-			_tprintf(_T("\n\tThe error message:-%ws"), obj_error_handler.fngeterrordescription(dwErrCode));//Retriving error message
-			_tprintf(_T("\n\tThe error code:-%d"), obj_error_handler.fngetErrCode());//Retriving error code
-			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
+			_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
 			return EXIT_FAILURE;
 		}
 		while (nSectors)
@@ -214,7 +233,7 @@ int main(int argc,TCHAR *argv[])
 				_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 				return EXIT_FAILURE;
 			}
-			if (obj_file_to_write.fnWrite(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+			if (obj_file_to_write_tempFile.fnWrite(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
 			{
 				obj_file_to_read.fnClose();
 				obj_file_to_write.fnClose();
@@ -239,7 +258,7 @@ int main(int argc,TCHAR *argv[])
 			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 			return EXIT_FAILURE;
 		}
-		if (obj_file_to_write.fnWrite(bReadBuffer, nAdditional) == FALSE)
+		if (obj_file_to_write_tempFile.fnWrite(bReadBuffer, nAdditional) == FALSE)
 		{
 			dwErrCode = GetLastError();//Retriving the last error code
 			obj_file_to_read.fnClose();//Closing the handle opened for reading
@@ -249,7 +268,46 @@ int main(int argc,TCHAR *argv[])
 			_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 			return EXIT_FAILURE;
 		}
+		obj_file_to_read.fnClose();
+		obj_file_to_write_tempFile.fnClose();
 
+		if (obj_file_to_read_tempFile.fnCreate((LPTSTR)szTempFileName, GENERIC_READ, OPEN_EXISTING) == FALSE)//object to the temporary filename is obj_file_to_write_tempFile
+		{
+			obj_file_to_read_tempFile.fnClose();
+			dwErrCode = GetLastError();
+			_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+			return EXIT_FAILURE;
+		}
+		do {
+
+			if (obj_file_to_read.fnRead(bReadBuffer, CFile::m_knSECTORSIZE) == FALSE)
+			{
+				obj_file_to_read.fnClose();
+				obj_file_to_write.fnClose();
+				dwErrCode = GetLastError();
+				_tprintf(_T("\n\tThe error message:-%ws\n"), obj_error_handler.fngeterrordescription(dwErrCode));
+				return EXIT_FAILURE;
+			}
+			//For loop to print the temp file
+			for (int i = 0; i < CFile::m_knSECTORSIZE; i++)
+			{
+				cout << bReadBuffer[i];
+			}
+			nSectors--;
+		} while (nSectors);
+		if (obj_file_to_read.fnRead(bReadBuffer, nAdditional) == FALSE)
+		{
+			obj_file_to_read.fnClose();
+			obj_file_to_write.fnClose();
+			return EXIT_FAILURE;
+		}
+		//FOr loop to print additional bytes
+		for (int i = 0; i < nAdditional; i++)
+		{
+			cout << bReadBuffer[i];
+		}
+		DeleteFileA(szTempFileName);
+		obj_file_to_read_tempFile.fnClose();
 		break;
 	}
 	case 5:
