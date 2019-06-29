@@ -4,15 +4,34 @@
 #include<string>
 #include<vector>
 using namespace std;
-BOOL CCmdLine::fnCheckOptionList(TCHAR* arg3)
+
+void CCmdLine::fnCreateVector(string B)
 {
-	std::vector<std::string> vect{ "-h1", "-h2", "-i", "-p", "-o", "-bw" };
-	return std::find(vect.begin(), vect.end(), arg3) != vect.end();
+	Vect.push_back(B);
 }
-BOOL CCmdLine::fnCheckEndingCharofBMP(TCHAR* arg)
+BOOL CCmdLine::fnCheckVector(string A)
 {
-	std::string objPhrase = arg;
-	std::smatch objMatch;
-	std::regex expr("^[a-zA-Z0-9]:\.*.bmp$");
+	if (std::find(Vect.begin(), Vect.end(), A) != Vect.end() == TRUE)
+	{
+		fnSetCurrentOption(A);
+		return TRUE;
+	}
+	return FALSE;
+}
+BOOL CCmdLine::fnCheckFILE(TCHAR* arg,char str[])
+{
+	char a[] = "$";
+	strcat_s(str,sizeof str, a);
+	string objPhrase = arg;
+	smatch objMatch;
+	regex expr(str);
 	return (std::regex_search(objPhrase, objMatch, expr));
+}
+void CCmdLine::fnSetCurrentOption(string str)
+{
+	strCurrentOption = str;
+}
+string CCmdLine::fnGetCurrentOption()
+{
+	return strCurrentOption;
 }

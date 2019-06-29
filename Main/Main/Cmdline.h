@@ -1,12 +1,20 @@
 #pragma once
 #include<Windows.h>
+#include<vector>
+using namespace std;
+
 class CCmdLine
 {
+private:
+	 vector<std::string> Vect;
+	 string strCurrentOption;
 public:
-	BOOL fnCheckOptionList(TCHAR*);
-	BOOL fnCheckEndingCharofBMP(TCHAR*);
+	void fnCreateVector(string);
+	BOOL fnCheckVector(string);
+	BOOL fnCheckFILE(TCHAR*,char[]);
+	void fnSetCurrentOption(string);
+	string fnGetCurrentOption();
 };
-
 
 /*
 * Usage: <Source> <Destination> <options> { Source bitmap file and either of one option is required out of three }
