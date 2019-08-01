@@ -11,7 +11,7 @@ private:
 	 int nCountargument;
 public:
 	BOOL Searchoptionslist(string);
-	BOOL Checkextension(TCHAR*, char[]);
+	BOOL Checkextension(TCHAR*,const char[]);
 	void Addoptions(string);
 	void SetCurrentOption(string);
 	void SetCountargument(int);

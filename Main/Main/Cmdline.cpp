@@ -18,10 +18,8 @@ BOOL CCmdLine::Searchoptionslist(string strOption)
 	}
 	return FALSE;
 }
-BOOL CCmdLine::Checkextension(TCHAR* arg,char str[])
+BOOL CCmdLine::Checkextension(TCHAR* arg,const char str[])
 {
-	char a[] = "$";
-	strcat_s(str,sizeof str, a);
 	string objPhrase = arg;
 	smatch objMatch;
 	regex expr(str);

@@ -4,13 +4,13 @@
 class CError
 {
 private:
-	DWORD m_dwErrCode;
-	std::string szErrorString;
+		DWORD			 m_dwErrCode;
+		std::string		 szErrorString;
 public:
-	LPCTSTR fngeterrordescription();
-	LPCTSTR fngeterrordescription(DWORD);
-	void fnsetErrCode(DWORD);
-	DWORD fngetErrCode(void);
-	std::string getErrorString();
+		LPCTSTR			fngeterrordescription();
+		LPCTSTR			fngeterrordescription(DWORD);
+		void			fnsetErrCode(DWORD);
+		DWORD			fngetErrCode(void);
+		std::string		getErrorString();
 };
 
