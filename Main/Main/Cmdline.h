@@ -6,22 +6,17 @@ using namespace std;
 class CCmdLine
 {
 private:
-	 vector<std::string> Vect;
+	 vector<std::string> Optionslist;
 	 string strCurrentOption;
+	 int nCountargument;
 public:
-	void fnCreateVector(string);
-	BOOL fnCheckVector(string);
-	BOOL fnCheckFILE(TCHAR*,char[]);
-	void fnSetCurrentOption(string);
-	string fnGetCurrentOption();
+	BOOL Searchoptionslist(string);
+	BOOL Checkextension(TCHAR*, char[]);
+	void Addoptions(string);
+	void SetCurrentOption(string);
+	void SetCountargument(int);
+	int GetCountargument();
+	string GetCurrentOption();
 };
 
-/*
-* Usage: <Source> <Destination> <options> { Source bitmap file and either of one option is required out of three }
- * -h1 : Show bitmap file header : <Source.bmp> <-h1>
- * -h2 : Show DIB header         : <Source.bmp> <-h2>      
- ** -i  : Basic information of .bmp image file      : <Source.bmp> <-i>
- * -p  : Show pixel array        : <Source.bmp> <Destination.bmp> <-p>
- ** -o  : Original image copy     : <Source.bmp> <Destination.bmp> <-o>
- ** -bw : Black and White image   : <Source.bmp> <Destination.bmp> <-bw>
- */
+

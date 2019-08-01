@@ -5,20 +5,20 @@
 #include<vector>
 using namespace std;
 
-void CCmdLine::fnCreateVector(string B)
+void CCmdLine::Addoptions(string strOption)
 {
-	Vect.push_back(B);
+	Optionslist.push_back(strOption);
 }
-BOOL CCmdLine::fnCheckVector(string A)
+BOOL CCmdLine::Searchoptionslist(string strOption)
 {
-	if (std::find(Vect.begin(), Vect.end(), A) != Vect.end() == TRUE)
+	if (std::find(Optionslist.begin(), Optionslist.end(), strOption) != Optionslist.end() == TRUE)
 	{
-		fnSetCurrentOption(A);
+		SetCurrentOption(strOption);
 		return TRUE;
 	}
 	return FALSE;
 }
-BOOL CCmdLine::fnCheckFILE(TCHAR* arg,char str[])
+BOOL CCmdLine::Checkextension(TCHAR* arg,char str[])
 {
 	char a[] = "$";
 	strcat_s(str,sizeof str, a);
@@ -27,11 +27,19 @@ BOOL CCmdLine::fnCheckFILE(TCHAR* arg,char str[])
 	regex expr(str);
 	return (std::regex_search(objPhrase, objMatch, expr));
 }
-void CCmdLine::fnSetCurrentOption(string str)
+void CCmdLine::SetCountargument(int nCountargumentemp)
 {
-	strCurrentOption = str;
+	nCountargument = nCountargumentemp;
 }
-string CCmdLine::fnGetCurrentOption()
+void CCmdLine::SetCurrentOption(string strOption)
+{
+	strCurrentOption = strOption;
+}
+int CCmdLine::GetCountargument()
+{
+	return nCountargument;
+}
+string CCmdLine::GetCurrentOption()
 {
 	return strCurrentOption;
 }
