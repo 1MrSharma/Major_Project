@@ -294,7 +294,7 @@ int main(int argc, TCHAR *argv[])
 				
 				while (loop)
 				{
-					int nbitConversionLoop = 8;
+					int nbitConversionLoop = 8;//Have to initialize it for every loop as it is converting 3 byte to 1 byte
 
 					while (nbitConversionLoop)
 					{
