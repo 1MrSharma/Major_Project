@@ -99,13 +99,8 @@ int main(int argc, TCHAR *argv[])
 			int nSizeBMP = nSizeRawBitmap + nOffsetPixelArrayMono;
 			WORD filetype = objBmp.fnreturnFiletype();
 
-			BYTE bTupleColoured[4096] = { 0 };
-
-
-			signed nPixelRowsBMP = objBmp.fnreturnBitmapheight();
-			static signed nPixelColumnBMP = objBmp.fnreturnBitamapwidth();
-			int looprunning = nPixelColumnBMP / 8;
-			int nFlag = 1;
+			
+			
 
 
 			//Bitmap file header starts
@@ -217,15 +212,21 @@ int main(int argc, TCHAR *argv[])
 			}
 
 
-			int fFFlag = 1;
+			int fFFlag = 1;//Flag used so that header is copied only once in the beginning.
+			int nFlag = 1;//Flag used so that on starting to read convert and write the data to destination,the read handle read the values after header.
+			BYTE bTupleColoured[4096] = { 0 };
+			int nPixelRowsBMP = objBmp.fnreturnBitmapheight();
+			int nPixelColumnBMP = objBmp.fnreturnBitamapwidth();
+			int looprunning = nPixelColumnBMP / 8;
+			//int nbitConversionLoop = nLineLengthColoured / nByteBlackAndWhite;
+			
+
 			/*
 			 * Below is the code to compute pixel array for the monochrome image!
 			 */
 			while (nPixelRowsBMP)
 			{
-				__int32 i = 0;
-				__int32 nValue1;
-				__int32 nIteratorbTupleColoured = 0;
+				__int32 nIteratorbTupleColoured = 0;//Iterator for the buffer that is storing the value where the current is pointing.
 
 				if (fFFlag == 1) {
 					/*
@@ -283,107 +284,98 @@ int main(int argc, TCHAR *argv[])
 				//Final buffer which will be copied to the destination file.
 				BYTE bWriteBW[128] = { 0 };
 				int nIteratorbWriteBW = 0;
+				
+				int loop = nByteBlackAndWhite;
+				
 
 				/*
 				 * The below loop is running for the linelength of monochrome, removing the padding.
 				 */
-				while (looprunning)//102
+				
+				while (loop)
 				{
+					int nbitConversionLoop = 8;
 
-
-					//Rgb to bit conversion starts
-
-
-					//Reading 24 bit from the bTupleColoured buffer and converting each byte to a bit
-					/* Below is the Diagrammatic representation
-					 *
-					 * First row of pixels is copied to, bTupleColoured.Suppose for the image "24.bmp","2460 bytes" are copied !
-					 *    ___________________
-					 *	  |	 B    G    R    |
-					 *    |-----------------|
-					 *	  |	 0    1    2    |
-					 *	  |	 3    4    5    |
-					 *	  |	 6    7    8    |
-					 *	  |	 9    10   11   |
-					 *	  |	 12   13   14   |
-					 *	  |	 .........      |
-					 *	  |	 .........      |
-					 *	  |	 2457 2458 2459 |
-					 *    |-----------------|
-					 *
-					 * Every color means,"BLUE","GREEN" or "RED" have the maximum value "255"!
-					 * And every pixel contains, above three values BGR,we have to take average of the three color values.
-					 * Have to divide it with,"nTotalValuePixel",i.e the addition of all the three color values,i.e 765 !
-					 * After division we get the "rAverage",which is the
-					 * Then compare "rAverage" with "fThreshold"(0.5) to get the binary equivalent.
-					 *
-					 */
-					float_t rAverage = ((float)(bTupleColoured[nIteratorbTupleColoured] + bTupleColoured[nIteratorbTupleColoured + 1] + bTupleColoured[nIteratorbTupleColoured + 2]) / nTotalValuePixel);
-					if (rAverage > fThreshold)
+					while (nbitConversionLoop)
 					{
-						bTupleBinary[nIteratorbTupleBinary % 8] = nBitValueMonochromeOne;
-						++nIteratorbTupleBinary;
-					}
-					else {
-						bTupleBinary[nIteratorbTupleBinary % 8] = nBitValueMonochromeZero;
-						++nIteratorbTupleBinary;
-					}
-					nIteratorbTupleColoured += 3;
-					//End of Reading 24 bit and converting it into 1 bit
 
-					/*
-					*After 1st iteration with the while loop from our source image "24.bmp" i.e the source
-					*The buffer "bTupleBinary",looks like below
-					*---------------------------------
-					*| 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
-					*---------------------------------
-					* Next,converting this particular code to the hexadecimal equivalent,which is "0xFF".
-					*/
+						//Rgb to bit conversion starts
 
-					if (nIteratorbTupleColoured % 24 == 0)
-					{
-						//Code to convert the bTupleBinary values to decimal
-						int nDecimalValue = 0;
-						int j = 7;
-						nIteratorbTupleBinary = 0;
-						while (j >= 0)
+
+						//Reading 24 bit from the bTupleColoured buffer and converting each byte to a bit
+						/* Below is the Diagrammatic representation
+						 *
+						 * First row of pixels is copied to, bTupleColoured.Suppose for the image "24.bmp","2460 bytes" are copied !
+						 *    ___________________
+						 *	  |	 B    G    R    |
+						 *    |-----------------|
+						 *	  |	 0    1    2    |
+						 *	  |	 3    4    5    |
+						 *	  |	 6    7    8    |
+						 *	  |	 9    10   11   |
+						 *	  |	 12   13   14   |
+						 *	  |	 .........      |
+						 *	  |	 .........      |
+						 *	  |	 2457 2458 2459 |
+						 *    |-----------------|
+						 *
+						 * Every color means,"BLUE","GREEN" or "RED" have the maximum value "255"!
+						 * And every pixel contains, above three values BGR,we have to take average of the three color values.
+						 * Have to divide it with,"nTotalValuePixel",i.e the addition of all the three color values,i.e 765 !
+						 * After division we get the "rAverage",which is the
+						 * Then compare "rAverage" with "fThreshold"(0.5) to get the binary equivalent.
+						 *
+						 */
+						float_t rAverage = ((float)(bTupleColoured[nIteratorbTupleColoured] + bTupleColoured[nIteratorbTupleColoured + 1] + bTupleColoured[nIteratorbTupleColoured + 2]) / nTotalValuePixel);
+						if (rAverage > fThreshold)
 						{
-							int nValue;
-							nValue = bTupleBinary[nIteratorbTupleBinary] * pow(2, j);
-							nDecimalValue += nValue;
-							j--;
-							nIteratorbTupleBinary++;
+							bTupleBinary[nIteratorbTupleBinary % 8] = nBitValueMonochromeOne;
+							++nIteratorbTupleBinary;
 						}
-						bWriteBW[nIteratorbWriteBW] = nDecimalValue;
-						++nIteratorbWriteBW;
+						else {
+							bTupleBinary[nIteratorbTupleBinary % 8] = nBitValueMonochromeZero;
+							++nIteratorbTupleBinary;
+						}
+						nIteratorbTupleColoured += 3;
+						//End of Reading 24 bit and converting it into 1 bit
+
+						/*
+						*After 1st iteration with the while loop from our source image "24.bmp" i.e the source
+						*The buffer "bTupleBinary",looks like below
+						*---------------------------------
+						*| 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+						*---------------------------------
+						* Next,converting this particular code to the hexadecimal equivalent,which is "0xFF".
+						*/
+
+						if (nIteratorbTupleColoured % 24 == 0)
+						{
+							//Code to convert the bTupleBinary values to decimal
+							int nDecimalValue = 0;
+							int j = 7;
+							nIteratorbTupleBinary = 0;
+							while (j >= 0)
+							{
+								int nValue;
+								nValue = bTupleBinary[nIteratorbTupleBinary] * pow(2, j);
+								nDecimalValue += nValue;
+								j--;
+								nIteratorbTupleBinary++;
+							}
+							bWriteBW[nIteratorbWriteBW] = nDecimalValue;
+							++nIteratorbWriteBW;
+						}
+
+						//Rgb to bit conversion ends
+						--nbitConversionLoop;
 					}
 
-					//Rgb to bit conversion ends
-
-					--nPixelColumnBMP;
+					--loop;
 				}
-
-				//Code to calculate padding bytes for monochrome image!
-				/*
-				 * Here the last
-				 */
-				int nLoopIteratorPadding = nLineLengthColoured % nColorDepth24;
-				BYTE bBufferPadding[64] = { 0 };
-				nIteratorbTupleBinary = 0;
-				for (int i = 0; i < nLoopIteratorPadding; i++)
-				{
-					if (bTupleColoured[i] == 0)
-					{
-						bTupleBinary[nIteratorbTupleBinary] = 0;
-					}
-					else
-					{
-						//
-					}
-				}
-
-
-				if (objFileToWrite.fnWrite(bWriteBW, looprunning) == FALSE)//To write HEADERS to destination file
+				bWriteBW[nIteratorbWriteBW] = 0x0e;
+				bWriteBW[nIteratorbWriteBW + 1] = 0x00;
+				
+				if (objFileToWrite.fnWrite(bWriteBW, nLineLengthBlackAndWhite ) == FALSE)//To write HEADERS to destination file
 				{
 					objFileToWrite.fnClose();//Closing the handle opened for writing to the file
 					dwErrCode = GetLastError();//Retriving the last error code
@@ -393,7 +385,7 @@ int main(int argc, TCHAR *argv[])
 				}
 				--nPixelRowsBMP;
 			}
-
+			
 		}
 	}
 
