@@ -13,19 +13,19 @@ public:
 	WORD fnreturnFiletype();
 	WORD fnreturnReserved1();
 	WORD fnreturnReserved2();
-	DWORD fnreturnSizeBMP();
-	DWORD fnreturnOffsetpixelarray();
-	DWORD fnreturnSizebitmapinfoheader();
+		DWORD fnreturnSizeBMP();
+		DWORD fnreturnOffsetpixelarray();
+		DWORD fnreturnSizebitmapinfoheader();
 	INT32 fnreturnBitamapwidth();
 	INT32 fnreturnBitmapheight();
 	WORD fnreturnColorplanes();
 	WORD fnreturnColordepth();
-	DWORD fnreturnCompressionmethod();
-	DWORD fnreturnRawimagesize();
-	DWORD fnreturnHorizontalresolution();
-	DWORD fnreturnVerticalresolution();
-	DWORD fnreturnColorpallete();
-	DWORD fnreturnImportantcolors();
+		DWORD fnreturnCompressionmethod();
+		DWORD fnreturnRawimagesize();
+		DWORD fnreturnHorizontalresolution();
+		DWORD fnreturnVerticalresolution();
+		DWORD fnreturnColorpallete();
+		DWORD fnreturnImportantcolors();
 };
 
 #endif

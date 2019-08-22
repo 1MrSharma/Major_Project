@@ -164,7 +164,6 @@
     <ClInclude Include="CmdLine.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="File.h" />
-    <ClInclude Include="Helper.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -173,7 +172,6 @@
     <ClCompile Include="CmdLine.cpp" />
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="File.cpp" />
-    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -183,8 +181,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="Extra.md" />
+    <None Include="BImage API.md" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Main.rc" />

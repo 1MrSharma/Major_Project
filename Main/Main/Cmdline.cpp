@@ -25,18 +25,7 @@ BOOL CCmdLine::Checkextension(TCHAR* arg,const char str[])
 	regex expr(str);
 	return (std::regex_search(objPhrase, objMatch, expr));
 }
-void CCmdLine::SetCountargument(int nCountargumentemp)
-{
-	nCountargument = nCountargumentemp;
-}
-void CCmdLine::SetCurrentOption(string strOption)
-{
-	strCurrentOption = strOption;
-}
-int CCmdLine::GetCountargument()
-{
-	return nCountargument;
-}
+
 string CCmdLine::GetCurrentOption()
 {
 	return strCurrentOption;

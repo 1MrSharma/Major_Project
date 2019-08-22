@@ -5,7 +5,6 @@
 #include<cstdio>
 #include<vector>
 #include<algorithm>
-#include"Helper.h"
 #include"BMP.h"
 #include"File.h"
 #include"Error.h"
@@ -18,7 +17,8 @@ using namespace std;
 
 const int nBUFFERSIZE = 1024;
 const int nBUFFERSIZEbMonoReadBuffer = 62;
-const char chmagicCharacter[10] = ".bmp$";
+//const char* const chmagicCharacter = ".bmp$";
+const char chmagicCharacter[6] = ".bmp$";
 const int nOffsetPixelArrayMono = 0x3E;
 const int nSizeBitmapInfoHeaderMono = 0x28;
 const int nColorDepthMono = 1;
@@ -121,7 +121,10 @@ int main(int argc, TCHAR *argv[])
 		if (objCmdline.GetCurrentOption() == "-bw") { nChoice = 6; }//6 if -bw i.e black and white image copy
 		if (objCmdline.GetCurrentOption() == "-BW") { nChoice = 6; }//6 if -BW i.e black and white image copy
 
-
+		DWORD bsizeofBMP= pBMPstructure->fngetSizeBMP();
+		
+		int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE; 
+		int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE; 
 		switch (nChoice)
 		{
 			case 1://Bitmap info header
@@ -210,11 +213,8 @@ int main(int argc, TCHAR *argv[])
 			}
 			case 4://pixel array
 			{
-				DWORD bsizeofBMP = pBMPstructure->fngetSizeBMP();
+				
 				bsizeofBMP -= objBmp.fnreturnOffsetpixelarray();
-				int nSectors = bsizeofBMP / 1024;
-				int nAdditional = bsizeofBMP % 1024;
-				int nFlagPixelArray = 1;
 
 				if (objFileToRead.fnCreate(argv[2], GENERIC_READ, OPEN_EXISTING) == FALSE)
 				{
@@ -232,11 +232,16 @@ int main(int argc, TCHAR *argv[])
 					_tprintf(_T("\n\tThe error code:-%d"), objErrorHandler.fngetErrCode());//Retriving error code
 					return EXIT_FAILURE;
 				}
-				int flag = 1;
+				char userChoice;//Pixel array
+				cout << "Do you want to see complete pixel array ? [Y/N] " << endl;
+				cin >> userChoice;
+				if (userChoice == 'N' || userChoice == 'n')
+				{
+					return 0;
+				}
 				while (nSectors)
 				{
-
-					if (objFileToRead.fnRead(bReadBuffer, 1024) == FALSE)
+					if (objFileToRead.fnRead(bReadBuffer, nBUFFERSIZE) == FALSE)
 					{
 						objFileToRead.fnClose();
 						objFileToWrite.fnClose();
@@ -246,26 +251,9 @@ int main(int argc, TCHAR *argv[])
 						_tprintf(_T("\n---------------------------------------------------------------------------------------------"));
 						return EXIT_FAILURE;
 					}
-					int nInitialLower = 0, nInitialHigher = 16;
-					for (int nIteratorRows = 0; nIteratorRows < 64; nIteratorRows++)//64 because the size of bReadbuffer is 1024
+					for (int i = 0; i < 1024; i++)
 					{
-						for (int nIteratorColumn = nInitialLower; nIteratorColumn < nInitialHigher; nIteratorColumn++)
-						{
-							cout << hex << (int)bReadBuffer[nIteratorColumn] << " ";
-						}
-						nInitialLower += 16; nInitialHigher += 16;
-						cout << "\n";
-						if (flag == 1)
-						{
-							char Choice;
-							cout << "Do you want to see complete pixel array ? [Y/N] " << endl;
-							cin >> Choice;
-							if (Choice == 'N' || Choice == 'n')
-							{
-								return 0;
-							}
-							--flag;
-						}
+						cout << hex << (int)bReadBuffer[i] << " " << endl;
 					}
 					nSectors--;
 				}
@@ -287,9 +275,7 @@ int main(int argc, TCHAR *argv[])
 			}
 			case 5://original image copy
 			{
-				DWORD bsizeofBMP = pBMPstructure->fngetSizeBMP();//Getting the size of BMP image 
-				int nSectors = bsizeofBMP / CFile::m_knSECTORSIZE;//Calculating how many sectors does the image contain for size eqivalent to m_knSECTORSIZE
-				int nAdditional = bsizeofBMP % CFile::m_knSECTORSIZE;//Calculating how many remaining bytes left after calculating sectors
+				
 				if (objFileToRead.fnCreate(argv[2], GENERIC_READ, OPEN_EXISTING) == FALSE)//Creating a handle to source file
 				{
 					dwErrCode = GetLastError();//Retriving the last error code
@@ -359,9 +345,8 @@ int main(int argc, TCHAR *argv[])
 				//Creating header for black and white image
 
 				int nBitmapImageWidth = objBmp.fnreturnBitamapwidth();
-				int nRowSize = ((nBitmapImageWidth + 31) / 32) * 4;//Calculation of row size formula according wikipedia
 				DWORD dwBitmapHeight = objBmp.fnreturnBitmapheight();
-				int nSizeRawBitmap = nRowSize * dwBitmapHeight;
+				int nSizeRawBitmap = (((nBitmapImageWidth + 31) / 32) * 4) * dwBitmapHeight;
 				int nSizeBMP = nSizeRawBitmap + nOffsetPixelArrayMono;
 				WORD filetype = objBmp.fnreturnFiletype();
 
@@ -407,11 +392,12 @@ int main(int argc, TCHAR *argv[])
 				//Calculating the linelength and padding bytes of coloured image
 
 
-				int nLineLengthColoured, nPaddingColoured;
+				int nLineLengthColoured;
 
 				if (objBmp.fnreturnColordepth() == nColorDepth24)
 				{
-					int nBitmapwidth = ((objBmp.fnreturnBitamapwidth() * nPixelColorValue) % nMultiple4Check);
+					int nPaddingColoured, nBitmapwidth;
+					nBitmapwidth = ((nBitmapImageWidth * nPixelColorValue) % nMultiple4Check);
 					if (nBitmapwidth != 0)
 					{
 						nPaddingColoured = nMultiple4Check - nBitmapwidth;
@@ -433,9 +419,9 @@ int main(int argc, TCHAR *argv[])
 
 				int nByteBlackAndWhite, nPaddingBlackAndWhite, nLineLengthBlackAndWhite;
 
-				if ((objBmp.fnreturnBitamapwidth() % nMono8bpp) != 0)			//Calculating the bytes for black and white image
+				if ((nBitmapImageWidth % nMono8bpp) != 0)			//Calculating the bytes for black and white image
 				{
-					nByteBlackAndWhite = objBmp.fnreturnBitamapwidth() / nMono8bpp;
+					nByteBlackAndWhite = nBitmapImageWidth / nMono8bpp;
 				}
 				else
 				{
@@ -478,23 +464,18 @@ int main(int argc, TCHAR *argv[])
 				}
 
 
-				int fFFlag = 1;//Flag used so that header is copied only once in the beginning.
-				int nFlag = 1;//Flag used so that on starting to read convert and write the data to destination,the read handle read the values after header.
+				int nHeaderFlag = 1;//Flag used so that header is copied only once in the beginning.
+				int nToReadSetFlag = 1;//Flag used so that on starting to read convert and write the data to destination,the read handle read the values after header.
 				BYTE bTupleColoured[4096] = { 0 };
-				int nPixelRowsBMP = objBmp.fnreturnBitmapheight();
-				int nPixelColumnBMP = objBmp.fnreturnBitamapwidth();
-				int looprunning = nPixelColumnBMP / 8;
-				//int nbitConversionLoop = nLineLengthColoured / nByteBlackAndWhite;
-
 
 				/*
 				 * Below is the code to compute pixel array for the monochrome image!
 				 */
-				while (nPixelRowsBMP)
+				while (dwBitmapHeight)
 				{
 					__int32 nIteratorbTupleColoured = 0;//Iterator for the buffer that is storing the value where the current is pointing.
 
-					if (fFFlag == 1) {
+					if (nHeaderFlag == 1) {
 						/*
 					 * Write the "bMonoReadBuffer",which has both the header values,i.e(Bitmap & DIB header).
 					 * The "nOffsetPixelArrayMono",is the constant values for the header of monochrome image which is,62.
@@ -507,10 +488,10 @@ int main(int argc, TCHAR *argv[])
 							_tprintf(_T("\n\tThe error code:-%d"), objErrorHandler.fngetErrCode());
 							return EXIT_FAILURE;
 						}
-						--fFFlag;
+						--nHeaderFlag;
 					}
-					//"nFlag" used,so that the code inside "if" statement is compiled and runned only once.
-					if (nFlag == 1)
+					
+					if (nToReadSetFlag == 1)
 					{
 
 						/*
@@ -518,7 +499,7 @@ int main(int argc, TCHAR *argv[])
 						 * "SetFilePointer" WinAPI is used !
 						 */
 						DWORD dwptr = SetFilePointer(objFileToRead.fnGetHandle(), objBmp.fnreturnOffsetpixelarray(), NULL, FILE_BEGIN);
-
+					
 						//Check if it is pointing to the desired or giving some garbage value
 						if (dwptr == INVALID_SET_FILE_POINTER)
 						{
@@ -527,7 +508,7 @@ int main(int argc, TCHAR *argv[])
 							_tprintf(_T("\n\tThe error code:-%d"), objErrorHandler.fngetErrCode());							//Retriving error code
 							return EXIT_FAILURE;
 						}
-						--nFlag;
+						--nToReadSetFlag;
 					}
 
 					/*
@@ -551,14 +532,14 @@ int main(int argc, TCHAR *argv[])
 					BYTE bWriteBW[128] = { 0 };
 					int nIteratorbWriteBW = 0;
 
-					int loop = nByteBlackAndWhite;
+					
 
 
 					/*
 					 * The below loop is running for the linelength of monochrome, removing the padding.
 					 */
 
-					while (loop)
+					while (nByteBlackAndWhite)
 					{
 						int nbitConversionLoop = 8;//Have to initialize it for every loop as it is converting 3 byte to 1 byte
 
@@ -618,7 +599,7 @@ int main(int argc, TCHAR *argv[])
 							{
 								//Code to convert the bTupleBinary values to decimal
 								int nDecimalValue = 0;
-								int j = 7;
+								int j = 7;//Iterator to convert bits to binary
 								nIteratorbTupleBinary = 0;
 								while (j >= 0)
 								{
@@ -636,7 +617,7 @@ int main(int argc, TCHAR *argv[])
 							--nbitConversionLoop;
 						}
 
-						--loop;
+						--nByteBlackAndWhite;
 					}
 					bWriteBW[nIteratorbWriteBW] = 0x0e;
 					bWriteBW[nIteratorbWriteBW + 1] = 0x00;
@@ -649,7 +630,7 @@ int main(int argc, TCHAR *argv[])
 						_tprintf(_T("\n\tThe error code:-%d"), objErrorHandler.fngetErrCode());//Retriving error code
 						return EXIT_FAILURE;
 					}
-					--nPixelRowsBMP;
+					--dwBitmapHeight;
 				}
 
 			}
@@ -660,12 +641,12 @@ int main(int argc, TCHAR *argv[])
 	{
 		cout << "Usage: <Option> <Source> <Destination>" << endl;
 		cout << "Options:" << endl;
-		cout << "-h1 : Bitmap file header :   <-h1> <Source.bmp>" << endl;
-		cout << "-h2 : DIB header :           <-h2> <Source.bmp>" << endl;
-		cout << "-i  : Basic information :    <-i> <Source.bmp>" << endl;
-		cout << "-p  : pixel array :          <-p> <Source.bmp>" << endl;
-		cout << "-o  : Original image copy :  <-o> <Source.bmp> <Destination.bmp> " << endl;
-		cout << "-bw : Monochrome image :     <-bw> <Source.bmp> <Destination.bmp> " << endl;
+		cout << "-h1 : Bitmap file header :   <-H1> <Source.bmp>" << endl;
+		cout << "-h2 : DIB header :           <-H2> <Source.bmp>" << endl;
+		cout << "-i  : Basic information :    <-I> <Source.bmp>" << endl;
+		cout << "-p  : pixel array :          <-P> <Source.bmp>" << endl;
+		cout << "-o  : Original image copy :  <-O> <Source.bmp> <Destination.bmp> " << endl;
+		cout << "-bw : Monochrome image :     <-BW> <Source.bmp> <Destination.bmp> " << endl;
 	}
 }
 

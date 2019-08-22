@@ -30,9 +30,6 @@
     <ClInclude Include="BMPstructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CmdLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,16 +53,13 @@
     <ClCompile Include="BMP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CmdLine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="Extra.md" />
+    <None Include="README.md" />
+    <None Include="BImage API.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Main.rc">
