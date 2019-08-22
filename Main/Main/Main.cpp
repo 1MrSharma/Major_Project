@@ -343,28 +343,19 @@ int main(int argc, TCHAR *argv[])
 			{
 				BYTE bMonoReadBuffer[nBUFFERSIZEbMonoReadBuffer] = { 0 };
 				//Creating header for black and white image
-
 				int nBitmapImageWidth = objBmp.fnreturnBitamapwidth();
 				DWORD dwBitmapHeight = objBmp.fnreturnBitmapheight();
 				int nSizeRawBitmap = (((nBitmapImageWidth + 31) / 32) * 4) * dwBitmapHeight;
 				int nSizeBMP = nSizeRawBitmap + nOffsetPixelArrayMono;
 				WORD filetype = objBmp.fnreturnFiletype();
-
-
-
-
-
 				//Bitmap file header starts
-
 				memcpy(bMonoReadBuffer + 0, &filetype, 2);						//Magic characters of bmp (i.e) 0x42 0x4D
 				memcpy(bMonoReadBuffer + 2, &nSizeBMP, 2);						//Size of BMP file in bytes
 				bMonoReadBuffer[6] = objBmp.fnreturnReserved1();				//Reserved
 				bMonoReadBuffer[8] = objBmp.fnreturnReserved2();				//Reserved
 				bMonoReadBuffer[10] = nOffsetPixelArrayMono;					//Offset,(i.e) where the bitmap image data can be found
-
 				//Bitmap file header ends
 				//DIB Header starts
-
 				bMonoReadBuffer[14] = nSizeBitmapInfoHeaderMono;				//Size of DIB header.
 				memcpy(bMonoReadBuffer + 18, &nBitmapImageWidth, 4);			//The bitmap width in pixels.
 				memcpy(bMonoReadBuffer + 22, &dwBitmapHeight, 4);				//The bitmap height in pixels.
@@ -384,16 +375,12 @@ int main(int argc, TCHAR *argv[])
 				bMonoReadBuffer[59] = nColorTableBlackMono;						//..
 				bMonoReadBuffer[60] = nColorTableBlackMono;						//..
 				bMonoReadBuffer[61] = nColorTableWhiteMono;						//Color table ends.
-
 				//DIB Header ends
 
 				//End of creating header for black and white
 
 				//Calculating the linelength and padding bytes of coloured image
-
-
 				int nLineLengthColoured;
-
 				if (objBmp.fnreturnColordepth() == nColorDepth24)
 				{
 					int nPaddingColoured, nBitmapwidth;
@@ -406,19 +393,14 @@ int main(int argc, TCHAR *argv[])
 					{
 						nPaddingColoured = 0;
 					}
-
 					nLineLengthColoured = (objBmp.fnreturnBitamapwidth() *  nPixelColorValue) + nPaddingColoured;//length of 1 line including padding bytes
 
 				}
-
 				//End of calculating line length of linelength and padding bytes of coloured image
 
 
 				//Calculating the linelength and padding bytes for required monochrome/black and white image
-
-
 				int nByteBlackAndWhite, nPaddingBlackAndWhite, nLineLengthBlackAndWhite;
-
 				if ((nBitmapImageWidth % nMono8bpp) != 0)			//Calculating the bytes for black and white image
 				{
 					nByteBlackAndWhite = nBitmapImageWidth / nMono8bpp;
@@ -435,9 +417,7 @@ int main(int argc, TCHAR *argv[])
 				{
 					nPaddingBlackAndWhite = 0;
 				}
-
 				nLineLengthBlackAndWhite = nByteBlackAndWhite + nPaddingBlackAndWhite;//Length of 1 line have to be there in black and white image
-
 				//Ends the calculation of calculating linelength adn padding bytes for monochrome/black and white image
 
 
@@ -493,7 +473,6 @@ int main(int argc, TCHAR *argv[])
 					
 					if (nToReadSetFlag == 1)
 					{
-
 						/*
 						 * To copy the data of the file (only pixel array) to the buffer.
 						 * "SetFilePointer" WinAPI is used !

@@ -181,6 +181,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Algorithm.md" />
     <None Include="BImage API.md" />
     <None Include="README.md" />
   </ItemGroup>

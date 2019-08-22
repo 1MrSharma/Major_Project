@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Include="README.md" />
     <None Include="BImage API.md" />
+    <None Include="Algorithm.md" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Main.rc">
