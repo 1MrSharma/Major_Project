@@ -3,6 +3,7 @@
 
 	* 'Step-1'
 		* Start.
+* ![Step-2](https://github.com/1MrSharma/Major_Project/blob/White_Belt/Step-2.png)
 	* 'Step-2' 
 		* Calculate values for 'Bitmap file header' and store values in 'bMonoReadBuffer'.
 		* ![Step-2](https://github.com/1MrSharma/Major_Project/blob/White_Belt/Step-2.png)

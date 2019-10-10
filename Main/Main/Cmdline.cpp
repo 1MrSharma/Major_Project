@@ -30,3 +30,8 @@ string CCmdLine::GetCurrentOption()
 {
 	return strCurrentOption;
 }
+
+void CCmdLine::SetCurrentOption(string strOption)
+{
+	strCurrentOption = strOption;
+}
